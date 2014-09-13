@@ -14,7 +14,7 @@
     },
     "require-dev": {
         "phpunit/phpunit": "4.0.*",
-        "way/generators": "dev-master",
+        "way/generators": "~2.0",
         "orangehill/iseed": "dev-master",
         "barryvdh/laravel-debugbar": "dev-master",
         "fzaninotto/faker": "1.4.0"
@@ -36,8 +36,7 @@
         ],
         "post-update-cmd": [
             "php artisan clear-compiled",
-            "php artisan optimize",
-            "php artisan debugbar:publish"
+            "php artisan optimize"
         ],
         "post-create-project-cmd": [
             "php artisan key:generate"
