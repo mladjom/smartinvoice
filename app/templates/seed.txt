@@ -1,0 +1,22 @@
+<?php
+
+// Composer: "fzaninotto/faker": "v1.4.0"
+
+class $CLASS$ extends Seeder {
+ 
+    public function run()
+    {
+        $faker = Faker\Factory::create();
+        
+        $MODEL$::truncate();
+ 
+        foreach(range(1,10) as $index)
+        {
+            $MODEL$::create([
+
+                ]);
+        }
+ 
+    }
+ 
+}

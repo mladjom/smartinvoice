@@ -1,0 +1,27 @@
+{
+    "name": "SmartInvoice",
+    "version": "0.1.0",
+    "author": "Mladjo <mladen@milentijevic.com>",
+    "homepage": "http://milentijevic.com",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/mladjom/smartinvoice"
+    },
+    "licenses": [{
+            "type": "MIT",
+            "url": "http://opensource.org/licenses/MIT"
+        }],
+    "engines": {
+        "node": ">= 0.10.0"
+    },
+    "devDependencies": {
+        "grunt": "~0.4.2",
+        "grunt-contrib-clean": "~0.5.0",
+        "grunt-contrib-jshint": "~0.6.4",
+        "grunt-contrib-uglify": "~0.2.4",
+        "grunt-contrib-watch": "~0.5.3",
+        "grunt-contrib-less": "~0.8.1",
+        "grunt-contrib-cssmin": "~0.7.0",
+        "grunt-contrib-copy": "~0.5.0"
+    }
+}
