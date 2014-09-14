@@ -52,22 +52,9 @@
     </div>
     <div class="col-md-4">
         <!-- client -->
-        <div class="form-group {{{ $errors->has('client_id') ? 'has-error' : '' }}}">
-            <label class="control-label" for="client_id">{{ Lang::get('general.design') }}</label>
-            @if (isset($invoice))
-            <select class="form-control" name="client_id" id="client_id">
-                @foreach ($clients as $client)
-                <option {{ $invoice->client_id == $client->id ? 'selected="selected"' : null }} value="{{ $client->id }}">{{ $client->name }}</option>
-                @endforeach
-            </select>      
-            @else
-            <select class="form-control" name="client_id" id="client_id">
-                @foreach ($clients as $client)
-                <option value="{{ $client->id }}">{{ $client->name }}</option>
-                @endforeach
-            </select>
-            @endif      
-            {{ $errors->first('client_id', '<span class="help-block">:message</span>') }}
+        <div class="form-group {{{ $errors->has('design_id') ? 'has-error' : '' }}}">
+            <label class="control-label" for="design_id">{{ Lang::get('general.design') }}</label>
+
         </div>
         <!-- ./ client --> 
     </div>
@@ -113,17 +100,41 @@
             <div class="panel-body">
                 <!-- number -->
                 <div class="form-group {{{ $errors->has('number') ? 'has-error' : '' }}}">
-                    <input class="form-control" type="text" name="number" id="number" placeholder="{{ Lang::get('invoices.placeholder.number') }}" value="{{{ Input::old('number', isset($invoice) ? $invoice->number : null) }}}" />
-                    {{ $errors->first('number', '<span class="help-block">:message</span>') }}
+                    <div class="row">
+                        <label class="control-label col-sm-4" for="design_id">{{ Lang::get('invoices.label.number') }}</label>
+                        <div class="col-sm-8">
+                            <input class="form-control col-sm-8" type="text" name="number" id="number" placeholder="{{ Lang::get('invoices.placeholder.number') }}" value="{{{ Input::old('number', isset($invoice) ? $invoice->number : null) }}}" />
+                            {{ $errors->first('number', '<span class="help-block">:message</span>') }}
+                        </div>
+                    </div>
                 </div>
                 <!-- ./ number -->
-                <input class="datepicker form-control" data-date-format="mm/dd/yyyy">
+                <!-- date -->
+                <div class="form-group">
+                    <div class="row">
+                        <label class="control-label col-sm-4" for="design_id">{{ Lang::get('invoices.label.date') }}</label>
+                        <div class="col-sm-8">
+                            <input class="datepicker form-control" name="date" id="date" data-date-format="mm/dd/yyyy">
+                        </div>
+                    </div>
+                </div>
+                <!-- ./ date -->
+                <!-- due_date -->
+                <div class="form-group">
+                    <div class="row">
+                        <label class="control-label col-sm-4" for="design_id">{{ Lang::get('invoices.label.due_date') }}</label>
+                        <div class="col-sm-8">
+                            <input class="datepicker form-control" name="due_date" id="due_date" data-date-format="mm/dd/yyyy">
+                        </div>
+                    </div>
+                </div>
+                <!-- ./ due_date -->
             </div>
         </div>
     </div>    
 </div>
 <!-- / end client details section -->
-<!-- Start row 3 -->
+<!-- Start row 4 -->
 <div class="row">
     <div class="col-md-12">
         <div class="table-responsive">
@@ -221,15 +232,15 @@
 
         <h4>Invoice notes</h4>
         <hr>
-        <div class="col-md-12">
-            <textarea class="form-control" name="invoice_note" rows="3">Total amount should be paid within 14 working days from invoice date. </textarea>
+        <div class="form-group {{{ $errors->has('note') ? 'has-error' : '' }}}">
+            <textarea class="form-control" name="note" rows="3">Total amount should be paid within 14 working days from invoice date. </textarea>
         </div>
 
     </div>
 
-</div> <!-- End row 3 -->
+</div> <!-- End row 4 -->
 
-<div class="row">
+<!--<div class="row">
     <div class="col-xs-5">
         <div class="panel panel-info">
             <div class="panel-heading">
@@ -261,18 +272,8 @@
             </div>
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-md-3">
+</div>-->
 
-    </div>
-    <div class="col-md-3">
-
-    </div>
-    <div class="col-md-3">
-
-    </div>
-</div>    
 <!-- form actions -->
 <div class="form-group">
     <div class="controls">
@@ -286,7 +287,7 @@
 {{ HTML::script('assets/lib/bootstrap-datepicker/js/bootstrap-datepicker.js'); }}
 {{ HTML::script('assets/js/calc.js'); }}
 <script type="text/javascript">
-                $(".delete").hide();
+    $(".delete").hide();
 
     $(document).ready(function() {
         $('.datepicker').datepicker();
@@ -329,33 +330,33 @@
                 }
             });
         });
-        
-       $('input').click(function() {
-        $(this).select();
-    });
-    $("#paid").blur(update_balance);
-    $("#tax_rate").change(update_total);
 
-    // Add new items row to invoice
-    // If you like to change your HTML for your invoice item, do so below, make sure you keep the right classes
-    $("#addrow").click(function() {
-        $(".item-row:last").after('<tr class="item-row"><td class="item-name"><div class="delete-wpr"><input type="text" class="form-control item-name" placeholder="Item name" name="item_name[]" value=""><a class="delete btn btn-danger"  title="Remove row"><i class="fa fa-remove"></i></span></a></div></td><td class="description"><textarea class="form-control" name="item_description[]" rows="1" placeholder="Item description" id="itemDescription"></textarea></td><td><input type="text" class="cost form-control" name="item_price[]" id="itemPrice" placeholder="0.00"></td><td><input type="text" class="qty form-control" value="" name="item_qty[]" placeholder="0" id="itemQty"></td><td align="right"><span class="price">$0.00</span></td></tr>');
-        if ($(".delete").length > 0)
-            $(".delete").show();
+        $('input').click(function() {
+            $(this).select();
+        });
+        $("#paid").blur(update_balance);
+        $("#tax_rate").change(update_total);
+
+        // Add new items row to invoice
+        // If you like to change your HTML for your invoice item, do so below, make sure you keep the right classes
+        $("#addrow").click(function() {
+            $(".item-row:last").after('<tr class="item-row"><td class="item-name"><div class="delete-wpr"><input type="text" class="form-control item-name" placeholder="Item name" name="item_name[]" value=""><a class="delete btn btn-danger"  title="Remove row"><i class="fa fa-remove"></i></span></a></div></td><td class="description"><textarea class="form-control" name="item_description[]" rows="1" placeholder="Item description" id="itemDescription"></textarea></td><td><input type="text" class="cost form-control" name="item_price[]" id="itemPrice" placeholder="0.00"></td><td><input type="text" class="qty form-control" value="" name="item_qty[]" placeholder="0" id="itemQty"></td><td align="right"><span class="price">$0.00</span></td></tr>');
+            if ($(".delete").length > 0)
+                $(".delete").show();
+            bind();
+        });
+
         bind();
-    });
 
-    bind();
-    
-    $(document).on("click", "a.delete", function() {
-        $(this).parents('.item-row').remove();
-        update_total();
-        if ($(".delete").length < 2)
-            $(".delete").hide();
-    });     
-        
-        
-        
+        $(document).on("click", "a.delete", function() {
+            $(this).parents('.item-row').remove();
+            update_total();
+            if ($(".delete").length < 2)
+                $(".delete").hide();
+        });
+
+
+
     });
 </script>
 @stop

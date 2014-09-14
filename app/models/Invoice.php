@@ -6,6 +6,9 @@ class Invoice extends \Eloquent {
 
     // Add your validation rules here
     public static $rules = [
+        'biller_id' => 'required',
+        'client_id' => 'required',
+        'number' => 'required',
     ];
     protected $guarded = array();  // Important
     protected $dates = ['deleted_at'];

@@ -31,11 +31,13 @@ class InvoicesController extends \BaseController {
      * @var TaxRate
      */
     protected $tax_rate;
+
     /**
      * Item Model
      * @var Item
      */
     protected $item;
+
     /**
      * Inject the models.
      * @param Client $client
@@ -47,8 +49,8 @@ class InvoicesController extends \BaseController {
         $this->biller = $biller;
         $this->client = $client;
         $this->user = $user;
-         $this->item = $item;
-       $this->tax_rate = $tax_rate;
+        $this->item = $item;
+        $this->tax_rate = $tax_rate;
     }
 
     /**
@@ -90,6 +92,7 @@ class InvoicesController extends \BaseController {
         $clients = $user->client;
         $billers = $user->biller;
         $tax_rates = TaxRate::where('user_id', $user->id)->get();
+
         return View::make('invoices.create', compact('clients', 'billers', 'tax_rates'));
     }
 
@@ -100,7 +103,26 @@ class InvoicesController extends \BaseController {
      * @return Response
      */
     public function store() {
-        //
+        $validator = Validator::make($data = Input::all(), Invoice::$rules);
+
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
+
+        $user = Auth::user();
+
+        $this->invoice->biller_id = Input::get('biller_id');
+        $this->invoice->client_id = Input::get('client_id');
+        $this->invoice->number = Input::get('number');
+        $this->invoice->user_id = $user->id;
+ 
+        //dd($data);
+
+        if(  $this->invoice->save()) {
+            
+        }
+
+        return Redirect::route('invoices.index');
     }
 
     /**

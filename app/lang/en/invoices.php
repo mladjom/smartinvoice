@@ -2,11 +2,13 @@
 
 return array(
     'label' => array(
-        'name' => 'Name',
+        'number' => 'Invoice#',
+        'date' => 'Date',
+        'due_date' => 'Due Date',
 
     ),
     'placeholder' => array(
-        'name' => 'Enter invoice name',
+        'number' => 'Invoice number',
 
     ),
     'general' => array(
@@ -20,9 +22,9 @@ return array(
         'show_deleted' => 'Show Inactive Invoices',
     ),
     'table' => array(
-        'name' => 'Name',
-        'email' => 'Email',
-        'manager' => 'Manager',
+        'number' => 'Invoice Number',
+        'biller' => 'Biller',
+        'client' => 'Client',
         'last_login' => 'Last Login',
         'activated' => 'Active',
         'created_at' => 'Created',

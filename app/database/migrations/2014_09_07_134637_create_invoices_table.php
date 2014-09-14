@@ -16,17 +16,12 @@ class CreateInvoicesTable extends Migration {
             $table->integer('user_id')->index();
             $table->integer('biller_id')->index();
             $table->integer('client_id')->index();
-
             $table->string('number', 255);
-
             $table->date('date')->nullable();
             $table->date('due_date')->nullable();
-
-            $table->boolean('is_recurring');
-
-
+            $table->boolean('is_recurring')->default(0);
+            $table->string('note')->nullable();
             $table->softDeletes();
-
             $table->timestamps();
         });
     }

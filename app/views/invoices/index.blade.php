@@ -32,14 +32,14 @@
 <table id="invoices" class="table table-bordered">
     <thead>
         <tr>
-            <th class="col-md-1"><input type="checkbox" class="selectAll"></th>
-            <th class="col-md-2 text-right">{{ Lang::get('general.actions') }}</th>
+            <th class="col-md-2">{{ Lang::get('invoices.table.number') }}</th>
+            <th class="col-md-10 text-right">{{ Lang::get('general.actions') }}</th>
         </tr>
     </thead>
     <tbody>
         @foreach ($invoices as $invoice)
         <tr>
-            <td></td>
+            <td>{{ $invoice->number }}</td>
             <td class="text-right">
                 @if (  is_null($invoice->deleted_at))
                 <a class="btn btn-small btn-success" href="{{ URL::to('invoices/' . $invoice->id) }}"><i class="fa fa-eye"></i></a>               

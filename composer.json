@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "name": "mladjom/smartinvoice",
+    "description": "Invoicing application built with Laravel 4.2.6 and Bootstrap 3.2.0.",
+    "keywords": ["invoice", "laravel", "bootstrap", "invoicing"],
     "license": "MIT",
     "require": {
         "laravel/framework": "4.2.*",
