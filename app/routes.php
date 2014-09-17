@@ -28,18 +28,20 @@ Route::get('users/logout', 'UsersController@logout');
 Route::group(array('before' => 'auth'), function() {
 
     Route::get('dashboard', 'DashboardController@index');
-    
+
     Route::get('billers/{id}/restore', 'BillersController@restore');
     Route::get('billers/{id}/delete', 'BillersController@delete');
     Route::resource('billers', 'BillersController');
 
     Route::get('clients/{id}/restore', 'ClientsController@restore');
     Route::get('clients/{id}/delete', 'ClientsController@delete');
-    Route::resource('clients', 'ClientsController');    
+    Route::resource('clients', 'ClientsController');
 
-    Route::resource('invoices', 'InvoicesController');    
-    
-    
+    Route::get('invoices/{id}/restore', 'InvoicesController@restore');
+    Route::get('invoices/{id}/delete', 'InvoicesController@delete');
+    Route::resource('invoices', 'InvoicesController');
+
+
     Route::any('upload', 'UploadsController@uploadLogo');
 });
 

@@ -43,5 +43,9 @@ return array(
     'description' => 'Description',
     'price' => 'Rate/Price',
     'qty' => 'Hrs/Qty',
-    'total' => 'Total'
+    'subtotal' => 'Subtotal',
+    'total' => 'Total',
+    'tax' => 'Tax',
+    'total_paid' => 'Total Paid',
+    'total_due' => 'Total Due',
 );

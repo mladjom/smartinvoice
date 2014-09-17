@@ -2,7 +2,8 @@
 
 class Item extends \Eloquent {
 
-    protected $fillable = [];
+    protected $fillable = ['id', 'invoice_id'];
+    protected $guarded = array();
     /**
      * The database table used by the model.
      *

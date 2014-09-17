@@ -33,18 +33,22 @@
     <thead>
         <tr>
             <th class="col-md-2">{{ Lang::get('invoices.table.number') }}</th>
-            <th class="col-md-10 text-right">{{ Lang::get('general.actions') }}</th>
+            <th class="col-md-4">{{ Lang::get('general.biller') }}</th>
+            <th class="col-md-4">{{ Lang::get('general.client') }}</th>
+            <th class="col-md-2 text-right">{{ Lang::get('general.actions') }}</th>
         </tr>
     </thead>
     <tbody>
         @foreach ($invoices as $invoice)
         <tr>
             <td>{{ $invoice->number }}</td>
-            <td class="text-right">
+             <td>{{ $invoice->biller->name }}</td>
+            <td>{{ $invoice->client->name }}</td>
+           <td class="text-right">
                 @if (  is_null($invoice->deleted_at))
                 <a class="btn btn-small btn-success" href="{{ URL::to('invoices/' . $invoice->id) }}"><i class="fa fa-eye"></i></a>               
                 <a href="{{ URL::to('invoices/' . $invoice->id . '/edit') }}" class="btn btn-warning"><i class="fa fa-pencil"></i></a>
-                <a data-html="false" class="btn btn-danger delete-invoice" data-toggle="modal" href="{{ URL::to('invoices/' . $invoice->id ) }}" data-content="{{ Lang::get('invoices.message.warning.delete') }}" data-title="{{ Lang::get('general.delete') }} {{ htmlspecialchars($invoice->name) }}?" onClick="return false;"><i class="fa fa-trash-o"></i></a>
+                <a data-html="false" class="btn btn-danger delete-invoice" data-toggle="modal" href="{{ URL::to('invoices/' . $invoice->id ) }}" data-content="{{ Lang::get('invoices.message.warning.delete') }}" data-title="{{ Lang::get('general.delete') }} {{ htmlspecialchars($invoice->number) }}?" onClick="return false;"><i class="fa fa-trash-o"></i></a>
                 @else
                 <a href="{{ URL::to('invoices/' . $invoice->id. '/restore' ) }}" class="btn btn-warning"><i class="fa fa-reply"></i></a>
                  <a href="{{ URL::to('invoices/' . $invoice->id. '/delete' ) }}" class="btn btn-danger"><i class="fa fa-trash-o"></i></a>
@@ -69,7 +73,7 @@
         $('#invoices').dataTable({
             /* Set the defaults for DataTables initialisation */
             "bAutoWidth": false,
-            'aaSorting': [['1', 'asc']],
+            'aaSorting': [['0', 'asc']],
             // Disable sorting on the first and column
             "aoColumnDefs": [{
                     'bSortable': false,

@@ -16,10 +16,14 @@ class CreateInvoicesTable extends Migration {
             $table->integer('user_id')->index();
             $table->integer('biller_id')->index();
             $table->integer('client_id')->index();
+            $table->integer('tax_rate_id')->nullable();
             $table->string('number', 255);
             $table->date('date')->nullable();
             $table->date('due_date')->nullable();
             $table->boolean('is_recurring')->default(0);
+            $table->decimal('subtotal', 10, 2)->default(0.00);
+            $table->decimal('paid', 10, 2)->default(0.00);
+            $table->decimal('balance', 10, 2)->default(0.00);
             $table->string('note')->nullable();
             $table->softDeletes();
             $table->timestamps();

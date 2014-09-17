@@ -1,11 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-@if (isset($biller))
-{{ Lang::get('billers.general.edit') }} {{ $biller->name }}
-@else
 {{ Lang::get('billers.general.create') }}            
-@endif
 ::@parent
 @stop
 
@@ -16,12 +12,7 @@
             <div class="pull-right">
                 <a href="{{{ URL::to('billers') }}}" class="btn btn-default"><i class="fa fa-mail-reply"></i> {{ Lang::get('general.back') }}</a>
             </div>
-            <h2>@if (isset($biller))
-                {{ Lang::get('billers.general.edit') }} {{ $biller->name }}
-                @else
-                {{ Lang::get('billers.general.create') }}                 
-                @endif
-            </h2>
+            <h2>{{ Lang::get('billers.general.create') }}</h2>
         </div>
     </div>
 </div> 
