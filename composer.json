@@ -5,12 +5,13 @@
     "license": "MIT",
     "require": {
         "laravel/framework": "4.2.*",
-        "zizaco/confide": "dev-master",
-        "zizaco/entrust": "dev-master",
+        "zizaco/confide": "~4.0@dev",
+        "zizaco/entrust": "1.2.*@dev",
         "chumper/datatable": "2.x",
         "omnipay/omnipay": "2.x",
         "webpatser/laravel-countries": "dev-master",
-        "intervention/image": "2.x"
+        "intervention/image": "2.x",
+        "thujohn/pdf": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "4.0.*",

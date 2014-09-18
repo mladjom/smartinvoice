@@ -20,10 +20,10 @@ function update_total() {
     var total = 0;
     var taxrate =$('#tax_rate').find(':selected').data('rate');
     //var totalamount = 0;
-    $('.price').each(function(i) {
-        price = $(this).html().replace("$", "");
-        if (!isNaN(price))
-            total += Number(price);
+    $('.item_total').each(function(i) {
+        item_total = $(this).html().replace("$", "");
+        if (!isNaN(item_total))
+            total += Number(item_total);
     });
 
     subtotal = parseFloat(total);
@@ -32,13 +32,15 @@ function update_total() {
  
     total = roundNumber(subtotal + taxtotal, 2);
 
-    $('#subtotal').html(roundNumber(subtotal, 2));
-    
+    $('div.subtotal').html(roundNumber(subtotal, 2));
+    $('.subtotal').val(roundNumber(subtotal, 2));
+ 
     $('#taxtotal').html(taxrate);
     
     $('#invoice_total_tax').val(taxtotal);
     
     $('#total').html(total);
+    $('.total').val(total);
 
     update_balance();
 }
@@ -56,7 +58,7 @@ function update_price() {
     var row = $(this).parents('.item-row');
     var price = row.find('.cost').val().replace("$", "") * row.find('.qty').val();
     price = roundNumber(price, 2);
-    isNaN(price) ? row.find('.price').html("N/A") : row.find('.price').html(price);
+    isNaN(price) ? row.find('.item_total').html("N/A") : row.find('.item_total').html(price);
 
     update_total();
 }
@@ -100,8 +102,3 @@ function logo(a) {
         lines.push("<img src='" + a.image_path_thumbnail + "'>");
     return lines.join("<br>");
 }
-$(document).ready(function() {
-
-
-
-});

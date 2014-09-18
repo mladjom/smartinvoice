@@ -114,7 +114,16 @@ class InvoicesController extends \BaseController {
         $this->invoice->biller_id = Input::get('biller_id');
         $this->invoice->client_id = Input::get('client_id');
         $this->invoice->number = Input::get('number');
+        $this->invoice->subtotal = floatval(Input::get('subtotal'));
+        $this->invoice->tax_rate_id = Input::get('tax_rate');
+        $this->invoice->tax_total = floatval(Input::get('invoice_total_tax'));
+        $this->invoice->total = floatval(Input::get('total'));
+        $this->invoice->paid = floatval(Input::get('invoice_total_paid'));
+        $total = floatval(Input::get('total'));
+        $paid = floatval(Input::get('invoice_total_paid'));
+        $this->invoice->balance = $total - $paid;
         $this->invoice->user_id = $user->id;
+
         if (Input::has('date')) {
             $this->invoice->date = Input::get('date');
         }
@@ -122,7 +131,6 @@ class InvoicesController extends \BaseController {
             $this->invoice->due_date = Input::get('due_date');
         }
         if ($this->invoice->save()) {
-            //dd($this->invoice->id);
 
             $item_id = Input::get('item_id');
             $name = Input::get('item_name');
@@ -144,12 +152,22 @@ class InvoicesController extends \BaseController {
                     'description' => $item['description'],
                     'price' => floatval($item['price']),
                     'quantity' => floatval($item['quantity']),
+                    'total' => floatval($item['price']) * floatval($item['quantity']),
                 );
-
-                $item = Item::create($itemRecord);
+//                $item = new Item;
+//                $item->invoice_id = $this->invoice->id;
+//                $item->name = $item['name'];
+//                $item->description = $item['description'];
+//                $item->price = floatval($item['price']);
+//                $item->quantity = floatval($item['quantity']);
+//                $item->total = floatval($item['price']) * floatval($item['quantity']);
+//
+//                $item->save();
+                Item::create($itemRecord);
+                //$this->invoice->item()->create(array($itemRecord));
             }
+            return Redirect::to('invoices/' . $this->invoice->id . '/edit')->with('success', Lang::get('invoices.message.success.create'));
         }
-        return Redirect::to('invoices/' . $this->invoice->id . '/edit')->with('success', Lang::get('invoices.message.success.create'));
     }
 
     /**
@@ -160,7 +178,31 @@ class InvoicesController extends \BaseController {
      * @return Response
      */
     public function show($id) {
-        //
+        $invoice = Invoice::find($id);
+
+        $user = Auth::user();
+        $clients = $user->client;
+        $billers = $user->biller;
+        //$tax_rates = TaxRate::where('user_id', $user->id)->get();
+        $items = $invoice->item;
+
+        return View::make('invoices.show', compact('invoice', 'clients', 'billers', 'items'));
+    }
+
+    /**
+     * Download pdf invoice.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function download($id) {
+
+        $html = '<html><body>'
+                . '<p>Put your html here, or generate it with your favourite '
+                . 'templating system.</p>'
+                . '</body></html>';
+        
+        return PDF::load($html, 'A4', 'portrait')->download('my_pdf');
     }
 
     /**
@@ -206,6 +248,12 @@ class InvoicesController extends \BaseController {
         $invoice->biller_id = Input::get('biller_id');
         $invoice->client_id = Input::get('client_id');
         $invoice->number = Input::get('number');
+        $invoice->subtotal = floatval(Input::get('subtotal'));
+        $invoice->tax_rate_id = Input::get('tax_rate');
+        $invoice->tax_total = floatval(Input::get('invoice_total_tax'));
+        $invoice->total = floatval(Input::get('total'));
+        $invoice->paid = floatval(Input::get('invoice_total_paid'));
+        $invoice->balance = $invoice->total - $invoice->paid;
         $invoice->user_id = $user->id;
         if (Input::has('date')) {
             $invoice->date = Input::get('date');
@@ -241,15 +289,16 @@ class InvoicesController extends \BaseController {
                     'description' => $item['description'],
                     'price' => floatval($item['price']),
                     'quantity' => floatval($item['quantity']),
+                    'total' => floatval($item['price']) * floatval($item['quantity']),
                 );
 
                 if (empty($item['item_id'])) {
-                    // $item = Item::create($itemRecord);
-                    $invoice->item()->create($itemRecord);
+                    $item = Item::create($itemRecord);
+                    //$invoice->item()->create($itemRecord);
                 } else {
                     // print($item['item_id']);
-                    //  $item = Item::where('id', '=', $item['item_id'])->update($itemRecord);
-                    $invoice->item()->update($itemRecord);
+                    $item = Item::where('id', '=', $item['item_id'])->update($itemRecord);
+                    //$invoice->item()->update($itemRecord);
                 }
             }
             return Redirect::to('invoices/' . $invoice->id . '/edit')->with('success', Lang::get('invoices.message.success.update'));
@@ -270,7 +319,7 @@ class InvoicesController extends \BaseController {
     }
 
     /**
-     * Restore the specified biller to the storage.
+     * Restore the specified invoice to the storage.
      *
      * @param  int  $id
      * @return Response
@@ -283,7 +332,7 @@ class InvoicesController extends \BaseController {
     }
 
     /**
-     * Force remove the specified biller from storage.
+     * Force remove the specified invoice from storage.
      *
      * @param  int  $id
      * @return Response
@@ -291,6 +340,7 @@ class InvoicesController extends \BaseController {
     public function delete($id) {
 
         Invoice::withTrashed()->where('id', $id)->forceDelete();
+        Item::withTrashed()->where('invoice_id', $id)->forceDelete();
 
         return Redirect::route('invoices.index');
     }

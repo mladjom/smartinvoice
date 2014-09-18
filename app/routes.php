@@ -32,15 +32,17 @@ Route::group(array('before' => 'auth'), function() {
     Route::get('billers/{id}/restore', 'BillersController@restore');
     Route::get('billers/{id}/delete', 'BillersController@delete');
     Route::resource('billers', 'BillersController');
-
+ 
     Route::get('clients/{id}/restore', 'ClientsController@restore');
     Route::get('clients/{id}/delete', 'ClientsController@delete');
     Route::resource('clients', 'ClientsController');
-
+ 
+    Route::get('invoices/{id}/download', 'InvoicesController@download');
     Route::get('invoices/{id}/restore', 'InvoicesController@restore');
     Route::get('invoices/{id}/delete', 'InvoicesController@delete');
     Route::resource('invoices', 'InvoicesController');
 
+    Route::resource('tax_rates', 'TaxRatesController');
 
     Route::any('upload', 'UploadsController@uploadLogo');
 });

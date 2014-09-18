@@ -1,9 +1,14 @@
 <?php
 
-class Item extends \Eloquent {
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
-    protected $fillable = ['id', 'invoice_id'];
+class Item extends \Eloquent {
+   
+    use SoftDeletingTrait;
+
+    protected $fillable = [];
     protected $guarded = array();
+    protected $dates = ['deleted_at'];
     /**
      * The database table used by the model.
      *

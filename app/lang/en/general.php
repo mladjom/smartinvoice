@@ -33,6 +33,7 @@ return array(
     'client' => 'Client',
     'quotes' => 'Quotes',
     'invoices' => 'Invoices',
+    'invoice' => 'Invoice',
     'country' => 'Countries',
     'design' => 'Design',
     // Invoice

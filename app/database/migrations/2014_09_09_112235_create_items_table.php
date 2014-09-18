@@ -17,9 +17,11 @@ class CreateItemsTable extends Migration {
             $table->integer('tax_rate_id')->nullable();
             $table->string('name')->nullable();
             $table->text('description')->nullable();
-            $table->decimal('price', 10, 2)->default(0.00)->nullable();
-            $table->decimal('quantity', 10, 2)->default(0.00)->nullable();
+            $table->decimal('price', 10, 2)->default(0.00);
+            $table->decimal('quantity', 10, 2)->default(0.00);
+            $table->decimal('total', 10, 2)->default(0.00);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

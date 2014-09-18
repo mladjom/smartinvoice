@@ -10,7 +10,7 @@ class Biller extends \Eloquent {
     public static $rules = [
         'name' => 'required',
         'logo' => 'image|max:2000',
-        'email' => 'email',
+        'email' => 'required|email',
         'web' => 'url',
     ];
     protected $guarded = array();  // Important

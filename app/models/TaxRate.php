@@ -13,9 +13,13 @@ class TaxRate extends \Eloquent {
     protected $table = 'tax_rates';
 
     public function item() {
-        return $this->belongsTo('Item');
+        return $this->hasMany('Item');
     }
-
+    
+    public function invoice() {
+        return $this->hasMany('Invoice');
+    }
+    
     public function user() {
         return $this->belongsTo('User');
     }

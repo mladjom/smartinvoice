@@ -82,11 +82,17 @@ module.exports = function(grunt) {
                         src: ['./images/*.*','./js/*.*','./css/*.*'],
                         dest: 'public/assets/lib/datatables-bootstrap3'
                     }, 
-                                        {
+                    {
                         expand: true,
                         cwd: 'resources/vendor/bootstrap-datepicker',
                         src: ['css/datepicker3.css','js/bootstrap-datepicker.js'],
                         dest: 'public/assets/lib/bootstrap-datepicker'
+                    },
+                    {
+                        expand: true,
+                        cwd: 'resources/vendor/jspdf/dist',
+                        src: ['jspdf.min.js'],
+                        dest: 'public/assets/lib/jspdf'
                     },
                     {
                         expand: true,
