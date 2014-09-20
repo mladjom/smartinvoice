@@ -96,6 +96,12 @@ module.exports = function(grunt) {
                     },
                     {
                         expand: true,
+                        cwd: 'resources/vendor/jspdf/dist',
+                        src: ['jspdf.min.js'],
+                        dest: 'public/assets/lib/jspdf'
+                    },                    
+                    {
+                        expand: true,
                         cwd: 'resources/vendor/font-awesome',
                         src: ['./css/*.*','./fonts/*.*'],
                         dest: 'public/assets/lib/font-awesome'

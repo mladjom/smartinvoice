@@ -11,7 +11,9 @@
         "omnipay/omnipay": "2.x",
         "webpatser/laravel-countries": "dev-master",
         "intervention/image": "2.x",
-        "thujohn/pdf": "dev-master"
+        "h4cc/wkhtmltopdf-amd64": "0.12.x",
+        "h4cc/wkhtmltoimage-amd64": "0.12.x",
+        "barryvdh/laravel-snappy": "0.1.x"
     },
     "require-dev": {
         "phpunit/phpunit": "4.0.*",

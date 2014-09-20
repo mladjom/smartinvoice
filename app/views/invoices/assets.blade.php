@@ -101,8 +101,10 @@
                 $(".delete").hide();
         });
 
-        $('.download-pdf').click(function(){
-        });        
+//        $('.download-pdf').click(function(e){
+//         console.log('test');   
+//   e.preventDefault();            
+//        });        
      
     });
 </script>

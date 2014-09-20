@@ -1,23 +1,24 @@
 {
-  "name": "SmartInvoice",
-  "dependencies": {
-    "bootstrap": "~3.2.0",
-    "font-awesome": "~4.1.0",
-    "datatables-bootstrap3": "*",
-    "typeahead.js": "~0.10.5",
-    "jasny-bootstrap": "~3.1.3",
-    "bootstrap-datepicker": "~1.3.0"
-  },
-  "version": "0.0.1",
-  "authors": [
-    "Mladjo <mladen@milentijevic.com>"
-  ],
-  "license": "MIT",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ]
+    "name": "SmartInvoice",
+    "dependencies": {
+        "bootstrap": "~3.2.0",
+        "font-awesome": "~4.1.0",
+        "datatables-bootstrap3": "*",
+        "typeahead.js": "~0.10.5",
+        "jasny-bootstrap": "~3.1.3",
+        "bootstrap-datepicker": "~1.3.0",
+        "jspdf": "~1.0.178"
+    },
+    "version": "0.0.1",
+    "authors": [
+        "Mladjo <mladen@milentijevic.com>"
+    ],
+    "license": "MIT",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ]
 }

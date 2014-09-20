@@ -112,7 +112,7 @@ return array(
         'Chumper\Datatable\DatatableServiceProvider',
         'Webpatser\Countries\CountriesServiceProvider',
         'Intervention\Image\ImageServiceProvider',
-        'Thujohn\Pdf\PdfServiceProvider',
+        'Barryvdh\Snappy\ServiceProvider',
         /* Uncomment for use in development */
         'Way\Generators\GeneratorsServiceProvider', // Generators
         'Orangehill\Iseed\IseedServiceProvider', //Inverse seed generator       
@@ -187,6 +187,6 @@ return array(
         'Countries' => 'Webpatser\Countries\CountriesFacade',
         'Image' => 'Intervention\Image\Facades\Image',
         'Carbon' => 'Carbon\Carbon',
-        'PDF' => 'Thujohn\Pdf\PdfFacade',
+        'PDF' => 'Barryvdh\Snappy\Facades\SnappyPdf',
     ),
 );

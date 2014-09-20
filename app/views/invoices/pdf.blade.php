@@ -1,25 +1,15 @@
-@extends('layouts.modal')
-
-@section('title') {{ Lang::get('general.invoice') }} :: {{ $invoice->number }} @parent @stop
-
-@section('content') 
-<div class="page-header clearfix">
-    <div class="pull-right">
-        <a href="#" class="btn btn-default download-pdf"><i class="fa fa-download"></i> {{ Lang::get('general.pdf') }}</a>
-        <a href="{{{ URL::to('invoices') }}}" class="btn btn-default"><i class="fa fa-mail-reply"></i> {{ Lang::get('general.back') }}</a>
-    </div>
-</div>
-<div id="pdf">
-    <div class="page-header clearfix">
-        <div class="col-xs-6 logo">
+{{ HTML::style('assets/css/main.min.css'); }}
+<div class="container" id="pdf">
+    <div class="row page-header">
+        <div class="col-xs-6 col-sm-6 col-lg-6 logo">
             <h1><small>Logo</small></h1>
         </div>
-        <div class="col-xs-6 text-right">
-            <h1><small>Invoice</small></h1>
+        <div class="col-xs-6 col-sm-6 col-lg-6">
+            <h1 class="text-right"><small>Invoice #001</small></h1>
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-4">
+        <div class="col-xs-4 col-sm-4 col-lg-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <strong>{{ Lang::get('general.from') }}</strong>
@@ -30,7 +20,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs-4">
+        <div class="col-xs-4 col-sm-4 col-lg-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <strong>{{ Lang::get('general.to') }}</strong>
@@ -41,7 +31,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs-4">
+        <div class="col-xs-4 col-sm-4 col-lg-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <strong>{{ Lang::get('general.details') }}</strong>
@@ -81,7 +71,7 @@
             </div>
         </div>    
     </div>
-    <div class="table-responsive">
+   <div class="table-responsive">
         <table id="items" class="table table-bordered">
             <thead>
                 <tr class="invoice-items-th">
@@ -141,8 +131,7 @@
                     </td>
                 </tr>
                 <tr class="text-right">
-                    <td colspan="2" class="blank"> </td>
-                    <td colspan="2" class="total-line balance"><span class="invoice-total">{{ Lang::get('general.total_due') }}</span></td>
+                    <td colspan="4" class="total-line balance"><span class="invoice-total">{{ Lang::get('general.total_due') }}</span></td>
                     <td class="total-value balance">
                         <h2 class="due">{{{ $invoice->balance }}}</h2>
                     </td>
@@ -156,20 +145,3 @@
         <textarea class="form-control" name="note" rows="3">Total amount should be paid within 14 working days from invoice date. </textarea>
     </div>
 </div>
-@stop
-@section('scripts')
-{{ HTML::script('assets/lib/jspdf/jspdf.min.js'); }}
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('.download-pdf').on('click', function() {
-            var doc = new jsPDF();
-            doc.fromHTML($('#pdf').html(), 15, 15, {
-            });
-            doc.save('sample-file.pdf');
-
-
-        });
-
-    });
-</script>
-@stop

@@ -36,7 +36,7 @@ class Invoice extends \Eloquent {
     }
 
     public function item() {
-        return $this->hasMany('Item');
+        return $this->hasMany('Item')->withTrashed();
     }
     
     public function tax_rate() {

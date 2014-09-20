@@ -154,17 +154,8 @@ class InvoicesController extends \BaseController {
                     'quantity' => floatval($item['quantity']),
                     'total' => floatval($item['price']) * floatval($item['quantity']),
                 );
-//                $item = new Item;
-//                $item->invoice_id = $this->invoice->id;
-//                $item->name = $item['name'];
-//                $item->description = $item['description'];
-//                $item->price = floatval($item['price']);
-//                $item->quantity = floatval($item['quantity']);
-//                $item->total = floatval($item['price']) * floatval($item['quantity']);
-//
-//                $item->save();
+
                 Item::create($itemRecord);
-                //$this->invoice->item()->create(array($itemRecord));
             }
             return Redirect::to('invoices/' . $this->invoice->id . '/edit')->with('success', Lang::get('invoices.message.success.create'));
         }
@@ -183,10 +174,10 @@ class InvoicesController extends \BaseController {
         $user = Auth::user();
         $clients = $user->client;
         $billers = $user->biller;
-        //$tax_rates = TaxRate::where('user_id', $user->id)->get();
+        $tax_rate = $this->tax_rate->pluck('name');
         $items = $invoice->item;
 
-        return View::make('invoices.show', compact('invoice', 'clients', 'billers', 'items'));
+        return View::make('invoices.show', compact('invoice', 'clients', 'billers', 'items', 'tax_rate'));
     }
 
     /**
@@ -196,13 +187,17 @@ class InvoicesController extends \BaseController {
      * @return Response
      */
     public function download($id) {
+        $invoice = Invoice::find($id);
 
-        $html = '<html><body>'
-                . '<p>Put your html here, or generate it with your favourite '
-                . 'templating system.</p>'
-                . '</body></html>';
+        $user = Auth::user();
+        $clients = $user->client;
+        $billers = $user->biller;
+        $tax_rate = $this->tax_rate->pluck('name');
+        $items = $invoice->item;
+
+        $pdf = PDF::loadView('invoices.pdf', compact('invoice', 'clients', 'billers', 'items', 'tax_rate'));
+        return $pdf->download('invoice.pdf');        
         
-        return PDF::load($html, 'A4', 'portrait')->download('my_pdf');
     }
 
     /**
@@ -220,6 +215,7 @@ class InvoicesController extends \BaseController {
         $clients = $user->client;
         $billers = $user->biller;
         $tax_rates = TaxRate::where('user_id', $user->id)->get();
+        //dd($tax_rates);
         $items = $invoice->item;
 
         return View::make('invoices.edit', compact('invoice', 'clients', 'billers', 'tax_rates', 'items'));
