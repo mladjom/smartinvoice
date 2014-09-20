@@ -93,12 +93,6 @@ module.exports = function(grunt) {
                         cwd: 'resources/vendor/jspdf/dist',
                         src: ['jspdf.min.js'],
                         dest: 'public/assets/lib/jspdf'
-                    },
-                    {
-                        expand: true,
-                        cwd: 'resources/vendor/jspdf/dist',
-                        src: ['jspdf.min.js'],
-                        dest: 'public/assets/lib/jspdf'
                     },                    
                     {
                         expand: true,

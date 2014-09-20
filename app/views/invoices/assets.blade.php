@@ -99,12 +99,7 @@
             update_total();
             if ($(".delete").length < 2)
                 $(".delete").hide();
-        });
-
-//        $('.download-pdf').click(function(e){
-//         console.log('test');   
-//   e.preventDefault();            
-//        });        
+        });       
      
     });
 </script>

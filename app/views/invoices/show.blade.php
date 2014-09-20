@@ -5,7 +5,7 @@
 @section('content') 
 <div class="page-header clearfix">
     <div class="pull-right">
-        <a href="#" class="btn btn-default download-pdf"><i class="fa fa-download"></i> {{ Lang::get('general.pdf') }}</a>
+        <a href="{{{ URL::to('invoices/' . $invoice->id. '/download') }}}" class="btn btn-default download-pdf"><i class="fa fa-download"></i> {{ Lang::get('general.pdf') }}</a>
         <a href="{{{ URL::to('invoices') }}}" class="btn btn-default"><i class="fa fa-mail-reply"></i> {{ Lang::get('general.back') }}</a>
     </div>
 </div>
@@ -156,20 +156,4 @@
         <textarea class="form-control" name="note" rows="3">Total amount should be paid within 14 working days from invoice date. </textarea>
     </div>
 </div>
-@stop
-@section('scripts')
-{{ HTML::script('assets/lib/jspdf/jspdf.min.js'); }}
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('.download-pdf').on('click', function() {
-            var doc = new jsPDF();
-            doc.fromHTML($('#pdf').html(), 15, 15, {
-            });
-            doc.save('sample-file.pdf');
-
-
-        });
-
-    });
-</script>
 @stop
