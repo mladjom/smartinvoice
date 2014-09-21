@@ -8,7 +8,7 @@ class User extends Eloquent implements ConfideUserInterface {
 
     use ConfideUser;
 
-use HasRole;
+    use HasRole;
 
     public function biller() {
         return $this->hasMany('Biller');

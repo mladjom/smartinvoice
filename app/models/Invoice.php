@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
-class Invoice extends \Eloquent {
+class Invoice extends AbstractModel {
 
     use SoftDeletingTrait;
 
@@ -38,10 +38,11 @@ class Invoice extends \Eloquent {
     public function item() {
         return $this->hasMany('Item')->withTrashed();
     }
-    
+
     public function tax_rate() {
         return $this->belongsTo('TaxRate');
     }
+
     /**
      * Deletes a invoice and all
      * the associated items.
@@ -54,6 +55,36 @@ class Invoice extends \Eloquent {
 
         // Delete the invoice
         return parent::delete();
+    }
+
+    public function address($a) {
+
+        $lines = array();
+         if (isset($a['name']) && $a['name'])
+            $lines[] = '<strong>'.$a['name'].'</strong>';
+         if (isset($a['address_1']) && $a['address_1'])
+            $lines[] = $a['address_1'];
+        if (isset($a['address2']) && $a['address2'])
+            $lines[] = $a['address2'];
+        if ((isset($a['city']) && $a['city']) || (isset($a['state']) && $a['state']) || (isset($a['zip']) && $a['zip'])) {
+            $line = array();
+            if (isset($a['city']) && $a['city'])
+                $line[] = $a['city'];
+            if (isset($a['state']) && $a['state'])
+                $line[] = $a['state'];
+            if (isset($a['zip']) && $a['zip'])
+                $line[] = $a['zip'];
+            $lines[] = implode(' ', $line);
+        }
+         if (isset($a['phone']) && $a['phone'])
+            $lines[] = $a['phone'];        
+         if (isset($a['email']) && $a['email'])
+            $lines[] = $a['email'];       
+          if (isset($a['web']) && $a['web'])
+            $lines[] = $a['web'];       
+        
+        $lines = join('<br>', $lines);;
+        return $lines;
     }
 
 }

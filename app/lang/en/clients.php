@@ -51,7 +51,7 @@ return array(
         'noresults' => 'There are no results that match your query.',
     ),
     'help' => array(
-        'logo' => 'Supported: JPEG, GIF and PNG. Recommended size: 240px width by 120px height',
+        'logo' => 'Supported: JPEG, GIF and PNG. Recommended size: 240px width by 80px height',
     ),
     'message' => array(
         'warning' => array(

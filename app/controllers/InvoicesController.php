@@ -171,13 +171,12 @@ class InvoicesController extends \BaseController {
     public function show($id) {
         $invoice = Invoice::find($id);
 
-        $user = Auth::user();
-        $clients = $user->client;
-        $billers = $user->biller;
+        $client = $invoice->address($invoice->client);
+        $biller = $invoice->address($invoice->biller);
         $tax_rate = $this->tax_rate->pluck('name');
         $items = $invoice->item;
 
-        return View::make('invoices.show', compact('invoice', 'clients', 'billers', 'items', 'tax_rate'));
+        return View::make('invoices.show', compact('invoice', 'client', 'biller', 'items', 'tax_rate'));
     }
 
     /**
@@ -189,13 +188,12 @@ class InvoicesController extends \BaseController {
     public function download($id) {
         $invoice = Invoice::find($id);
 
-        $user = Auth::user();
-        $clients = $user->client;
-        $billers = $user->biller;
+        $client = $invoice->address($invoice->client);
+        $biller = $invoice->address($invoice->biller);
         $tax_rate = $this->tax_rate->pluck('name');
         $items = $invoice->item;
 
-        $pdf = PDF::loadView('invoices.pdf', compact('invoice', 'clients', 'billers', 'items', 'tax_rate'));
+        $pdf = PDF::loadView('invoices.show', compact('invoice', 'client', 'biller', 'items', 'tax_rate'));
         return $pdf->download('invoice.pdf');        
         
     }

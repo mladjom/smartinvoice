@@ -4,16 +4,16 @@
             <label for="logo">{{ Lang::get('clients.label.logo') }}</label>
             <p class="help-block">{{ Lang::get('clients.help.logo') }}</p>
             <div class="fileinput fileinput-new" data-provides="fileinput">
-                <div class="fileinput-new thumbnail" style="width: 240px; height: 120px;">
+                <div class="fileinput-new thumbnail" style="width: 240px; height: 80px;">
                     @if ( isset($client)  )
                     @if (  File::exists($client->image_path_thumbnail) )
                     {{ HTML::image($client->image_path_thumbnail, $client->image_name) }}
                     @endif
                     @else                        
-                    <img class="img-responsive" src="http://placehold.it/240x120" alt="...">
+                    <img class="img-responsive" src="http://placehold.it/240x80" alt="...">
                     @endif
                 </div>
-                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 240px; max-height: 120px;">
+                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 240px; max-height: 80px;">
                 </div>
                 <div>
                     <span class="btn btn-default btn-file"><span class="fileinput-new">{{ Lang::get('general.select_image') }}</span>

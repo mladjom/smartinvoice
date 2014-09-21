@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
-class Client extends \Eloquent {
+class Client extends AbstractModel {
 
     use SoftDeletingTrait;
 

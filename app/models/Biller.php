@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
-class Biller extends \Eloquent {
+class Biller extends AbstractModel {
 
     use SoftDeletingTrait;
 
@@ -34,5 +34,14 @@ class Biller extends \Eloquent {
     public function invoice() {
         return $this->hasMany('Invoice');
     }
-
+   /**
+* Determine if the passed User is the Snippet author
+*
+* @param User $user User instance
+* @return boolean
+*/
+public function isTheAuthor($user)
+{
+return $this->user_id === $user->id;
+}     
 }

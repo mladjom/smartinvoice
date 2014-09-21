@@ -88,7 +88,7 @@ class BillersController extends \BaseController {
         if (Input::hasFile('logo')) {
 
             $file = Input::file('logo');
-            $thumbnail = Image::make($file->getRealPath())->crop(240, 120);
+            $thumbnail = Image::make($file->getRealPath())->crop(240, 80);
 
             $destinationPath = 'uploads/' . $user->username . "/billers/";
             $filename_string = sha1(time() . time() . $file->getClientOriginalName());
@@ -123,12 +123,12 @@ class BillersController extends \BaseController {
         $biller = Biller::findOrFail($id);
         if (Request::ajax()) {
             return Response::json(array(
-                'status' => 'success',
-                'info' => $biller,
-                'country' => $biller->country->name,
-                'image_name' => $biller->image_name,
-                'image_path_thumbnail' => asset($biller->image_path_thumbnail),
-                )
+                        'status' => 'success',
+                        'info' => $biller,
+                        'country' => $biller->country->name,
+                        'image_name' => $biller->image_name,
+                        'image_path_thumbnail' => asset($biller->image_path_thumbnail),
+                            )
             );
         }
         return View::make('billers.show', compact('biller'));
@@ -141,9 +141,14 @@ class BillersController extends \BaseController {
      * @return Response
      */
     public function edit($id) {
-        
+
+        $biller = Biller::findOrFail($id); 
+
+//        if ($biller->user_id != Auth::user()->id) {
+//            return Redirect::route('billers.index')->withError('Unable to access that biller');
+//        }
+
         $countries = Country::all();
-        $biller = Biller::find($id);
         return View::make('billers.edit', compact('biller', 'countries'));
     }
 
@@ -182,7 +187,7 @@ class BillersController extends \BaseController {
             File::delete($biller->image_path, $biller->image_path_thumbnail);
 
             $file = Input::file('logo');
-            $thumbnail = Image::make($file->getRealPath())->crop(240, 120);
+            $thumbnail = Image::make($file->getRealPath())->crop(240, 80);
 
             $destinationPath = 'uploads/' . $user->username . "/billers/";
             $filename_string = sha1(time() . time() . $file->getClientOriginalName());

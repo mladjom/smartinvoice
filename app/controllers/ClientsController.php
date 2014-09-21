@@ -88,7 +88,7 @@ class ClientsController extends \BaseController {
         if (Input::hasFile('logo')) {
 
             $file = Input::file('logo');
-            $thumbnail = Image::make($file->getRealPath())->fit(240);
+            $thumbnail = Image::make($file->getRealPath())->crop(240, 80);
 
             $destinationPath = 'uploads/' . $user->username . "/clients/";
             $filename_string = sha1(time() . time() . $file->getClientOriginalName());
@@ -179,7 +179,7 @@ class ClientsController extends \BaseController {
             File::delete($client->image_path, $client->image_path_thumbnail);
             
             $file = Input::file('logo');
-            $thumbnail = Image::make($file->getRealPath())->fit(200);
+            $thumbnail = Image::make($file->getRealPath())->crop(240, 80);
 
             $destinationPath = 'uploads/' . $user->username . "/clients/";
             $filename_string = sha1(time() . time() . $file->getClientOriginalName());

@@ -15,7 +15,7 @@
             <h1><small>Logo</small></h1>
         </div>
         <div class="col-xs-6 text-right">
-            <h1><small>Invoice</small></h1>
+            <h1><small>Invoice# {{$invoice->number}}</small></h1>
         </div>
     </div>
     <div class="row">
@@ -26,6 +26,7 @@
                 </div>
                 <div class="panel-body ">
                     <address id="biller-info">
+                        {{$biller}}
                     </address>
                 </div>
             </div>
@@ -37,6 +38,7 @@
                 </div>
                 <div class="panel-body">
                     <address id="client-info">
+                        {{$client}}
                     </address>
                 </div>
             </div>

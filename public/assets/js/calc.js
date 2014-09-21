@@ -98,7 +98,10 @@ function address(a) {
 }
 function logo(a) {
     var lines = [];
-    if (a.image_path_thumbnail !== null && a.info.image_path_thumbnail)
+    if (a.image_path_thumbnail !== null && a.info.image_path_thumbnail){
         lines.push("<img src='" + a.image_path_thumbnail + "'>");
+    } else {
+        
+    }
     return lines.join("<br>");
 }

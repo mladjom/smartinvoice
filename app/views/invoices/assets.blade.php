@@ -41,9 +41,8 @@
                 success: function(data) {
                     // Check for a valid server side response
                     if (data.status === "success") {
-                        $("#biller-info").empty();
-                        console.log(logo(data));
-                        $("#biller-info").append(address(data));
+                        $("#biller-info").replaceWith(address(data));
+                        $(".logo").empty();
                         $(".logo").append(logo(data));
                     }
                 },
@@ -62,8 +61,7 @@
                     console.log(data);
                     // Check for a valid server side response
                     if (data.status === "success") {
-                        $("#client-info").empty();
-                        $("#client-info").append(address(data));
+                        $("#client-info").replaceWith(address(data));
                     }
                 },
                 error: function(xhr, textStatus, thrownError) {
@@ -77,6 +75,7 @@
         });
 
         $("#number").blur(function() {
+            $(".number").replaceWith($(this).val());
 
             console.log($(this).val());
         });

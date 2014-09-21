@@ -54,13 +54,14 @@
     </div>
 </div> 
 <div id="pdf">
-    <div class="row">
-        <div class="col-xs-6 logo">
-
+    <div class="page-header clearfix">
+        <div class="col-xs-6">
+            <div class="logo">
+                <h1><small>Logo</small></h1>
+            </div>
         </div>
         <div class="col-xs-6 text-right">
-            <h1>INVOICE</h1>
-            <h1><small>Invoice #001</small></h1>
+            <h1><small>Invoice# <span class="number">{{{ Input::old('number', isset($invoice) ? $invoice->number : '0000') }}}</span></small></h1>
         </div>
     </div>
     <div class="row">

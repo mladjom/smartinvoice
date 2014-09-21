@@ -47,6 +47,7 @@
            <td class="text-right">
                 @if (  is_null($invoice->deleted_at))
                 <a class="btn btn-small btn-success" href="{{ URL::to('invoices/' . $invoice->id) }}"><i class="fa fa-eye"></i></a>               
+                <a href="{{{ URL::to('invoices/' . $invoice->id. '/download') }}}" class="btn btn-default download-pdf"><i class="fa fa-download"></i></a>
                 <a href="{{ URL::to('invoices/' . $invoice->id . '/edit') }}" class="btn btn-warning"><i class="fa fa-pencil"></i></a>
                 <a data-html="false" class="btn btn-danger delete-invoice" data-toggle="modal" href="{{ URL::to('invoices/' . $invoice->id ) }}" data-content="{{ Lang::get('invoices.message.warning.delete') }}" data-title="{{ Lang::get('general.delete') }} {{ htmlspecialchars($invoice->number) }}?" onClick="return false;"><i class="fa fa-trash-o"></i></a>
                 @else
@@ -73,11 +74,10 @@
         $('#invoices').dataTable({
             /* Set the defaults for DataTables initialisation */
             "bAutoWidth": false,
-            'aaSorting': [['0', 'asc']],
             // Disable sorting on the first and column
             "aoColumnDefs": [{
                     'bSortable': false,
-                    'aTargets': [0, 3]
+                    'aTargets': [3]
                 }],
             "sPaginationType": "bs_normal",
         });

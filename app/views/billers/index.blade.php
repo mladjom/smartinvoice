@@ -32,8 +32,7 @@
 <table id="billers" class="table table-bordered">
     <thead>
         <tr>
-            <th class="col-md-1"><input type="checkbox" class="selectAll"></th>
-            <th class="col-md-4">{{ Lang::get('billers.table.name') }}</th>
+            <th class="col-md-5">{{ Lang::get('billers.table.name') }}</th>
             <th class="col-md-5">{{ Lang::get('billers.table.email') }}</th>
             <th class="col-md-2 text-right">{{ Lang::get('general.actions') }}</th>
         </tr>
@@ -41,7 +40,6 @@
     <tbody>
         @foreach ($billers as $biller)
         <tr>
-            <td></td>
             <td>{{ $biller->name }}</td>
             <td>{{{ $biller->email }}}</td>
             <td class="text-right">
@@ -73,11 +71,10 @@
         $('#billers').dataTable({
             /* Set the defaults for DataTables initialisation */
             "bAutoWidth": false,
-            'aaSorting': [['1', 'asc']],
-            // Disable sorting on the first and column
+            // Disable sorting on the last column
             "aoColumnDefs": [{
                     'bSortable': false,
-                    'aTargets': [0, 3]
+                    'aTargets': [2]
                 }],
             "sPaginationType": "bs_normal",
         });

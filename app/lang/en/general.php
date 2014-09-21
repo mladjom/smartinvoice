@@ -49,4 +49,5 @@ return array(
     'tax' => 'Tax',
     'total_paid' => 'Total Paid',
     'total_due' => 'Total Due',
+    'pdf' => 'PDF',
 );
