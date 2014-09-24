@@ -13,6 +13,7 @@
     <h2>{{ Lang::get('invoices.general.edit') }} #{{ $invoice->number }}</h2>
 </div>
 {{ Form::model($invoice, array('route' => array('invoices.update', $invoice->id), 'method' => 'PUT', 'files' => true)) }}
-@include('invoices/form')
+    @include('invoices/form')
 {{ Form::close() }}
+@include('tax_rates/modal')
 @stop

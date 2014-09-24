@@ -1,4 +1,4 @@
-@extends('layouts.modal')
+@extends('layouts.master')
 
 @section('title') {{ Lang::get('general.invoice') }} :: {{ $invoice->number }} @parent @stop
 
@@ -12,7 +12,7 @@
 <div id="pdf">
     <div class="page-header clearfix">
         <div class="col-xs-6 logo">
-            <h1><small>Logo</small></h1>
+            {{$logo}}
         </div>
         <div class="col-xs-6 text-right">
             <h1><small>Invoice# {{$invoice->number}}</small></h1>

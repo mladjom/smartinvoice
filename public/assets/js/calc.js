@@ -90,7 +90,7 @@ function address(a) {
         lines.push(a.country);
     if (a.info.phone !== null && a.info.phone)
         lines.push(a.info.phone);
-    if (a.email !== null && a.info.email && a.info.email)
+    if (a.info.email !== null && a.info.email && a.info.email)
         lines.push(a.info.email);
     if (a.info.web !== null && a.info.web)
         lines.push(a.info.web);
@@ -101,7 +101,8 @@ function logo(a) {
     if (a.image_path_thumbnail !== null && a.info.image_path_thumbnail){
         lines.push("<img src='" + a.image_path_thumbnail + "'>");
     } else {
-        
+         lines.push("<h1>" + a.info.name + "</h1>");
+       
     }
     return lines.join("<br>");
 }

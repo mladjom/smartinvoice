@@ -4,7 +4,11 @@ class TaxRate extends \Eloquent {
 
     protected $fillable = [];
     protected $guarded = array();  // Important
-
+    
+    public static $rules = [
+        'name' => 'required',
+        'rate' => 'required|numeric',
+    ];
     /**
      * The database table used by the model.
      *

@@ -1,5 +1,6 @@
-{{ HTML::style('assets/css/main.min.css'); }}
-<div class="container" id="pdf">
+@extends('layouts.pdf')
+
+@section('content')<div class="container" id="pdf">
     <div class="row page-header">
         <div class="col-xs-6 col-sm-6 col-lg-6 logo">
             <h1><small>Logo</small></h1>
@@ -145,3 +146,4 @@
         <textarea class="form-control" name="note" rows="3">Total amount should be paid within 14 working days from invoice date. </textarea>
     </div>
 </div>
+@stop

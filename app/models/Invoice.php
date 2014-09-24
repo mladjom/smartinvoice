@@ -76,6 +76,8 @@ class Invoice extends AbstractModel {
                 $line[] = $a['zip'];
             $lines[] = implode(' ', $line);
         }
+         if (isset($a['country_id']) && $a['country_id'])
+            $lines[] = Country::where('id', $a['country_id'])->pluck('name');; 
          if (isset($a['phone']) && $a['phone'])
             $lines[] = $a['phone'];        
          if (isset($a['email']) && $a['email'])
@@ -87,4 +89,19 @@ class Invoice extends AbstractModel {
         return $lines;
     }
 
+  public function logo($a) {
+
+        $lines = array();
+         if (isset($a['image_path_thimbnail']) && $a['image_path_thimbnail']){
+            $lines[] = '<img src="'.$a['image_path_thimbnail'].'">';
+         }else {
+              $lines[] = '<h1>'.$a['name'].'</h1>';
+         }
+        
+        $lines = join('<br>', $lines);;
+        return $lines;
+    }  
+    
+    
+    
 }

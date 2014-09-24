@@ -62,6 +62,7 @@
     {{ Lang::get('billers.table.noresults') }}
 </div>
 @endif
+    @include('layouts/modal')
 @stop
 @section('scripts')
 {{ HTML::script('assets/lib/datatables/js/jquery.dataTables.js'); }}

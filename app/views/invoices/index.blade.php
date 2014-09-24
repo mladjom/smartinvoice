@@ -65,6 +65,7 @@
     {{ Lang::get('invoices.table.noresults') }}
 </div>
 @endif
+    @include('layouts/modal')
 @stop
 @section('scripts')
 {{ HTML::script('assets/lib/datatables/js/jquery.dataTables.js'); }}
@@ -81,7 +82,7 @@
                 }],
             "sPaginationType": "bs_normal",
         });
-        $('.delete-invoice').click(function(evnt) {
+        $('.delete-invoice').click(function() {
             var href = $(this).attr('href');
             var message = $(this).attr('data-content');
             var title = $(this).attr('data-title');

@@ -137,6 +137,6 @@
         <a class="btn btn-link" href="{{{ URL::to('clients') }}}">{{ Lang::get('general.cancel') }}</a>
         <button type="submit" id="save" class="btn btn-success btn-lg">{{ Lang::get('general.save') }}</button>
     </div>
-</div>
+</div>   
 <!-- ./ form actions -->
 @include('invoices/assets')

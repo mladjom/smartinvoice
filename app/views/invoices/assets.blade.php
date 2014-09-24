@@ -18,7 +18,8 @@
             $.get("{{ URL::to('billers/') }}/" + biller_id, function(data) {
                 if (data.status === "success") {
                     $("#biller-info").append(address(data));
-                    $(".logo").append(logo(data));
+                     $(".logo").empty();
+                     $(".logo").append(logo(data));
                 }
             });
 
@@ -41,7 +42,8 @@
                 success: function(data) {
                     // Check for a valid server side response
                     if (data.status === "success") {
-                        $("#biller-info").replaceWith(address(data));
+                        $("#biller-info").empty();
+                        $("#biller-info").append(address(data));
                         $(".logo").empty();
                         $(".logo").append(logo(data));
                     }
@@ -58,10 +60,10 @@
                 dataType: 'json',
                 url: "{{ URL::to('clients/') }}/" + id,
                 success: function(data) {
-                    console.log(data);
                     // Check for a valid server side response
                     if (data.status === "success") {
-                        $("#client-info").replaceWith(address(data));
+                        $("#client-info").empty();
+                        $("#client-info").append(address(data));
                     }
                 },
                 error: function(xhr, textStatus, thrownError) {
@@ -99,7 +101,42 @@
             if ($(".delete").length < 2)
                 $(".delete").hide();
         });       
-     
+        $('.new-tax').click(function() {
+            var message = $(this).attr('data-content');
+            var title = $(this).attr('data-title');
+            $('#myModalLabel').text(title);;
+            $('#dataConfirmModal').modal({show: true});
+           return false;
+        }); 
+        $("#create-tax").click(function(){
+            $.ajax({
+                type: "GET",
+                dataType: 'json',
+                url: "{{ URL::to('tax_rates/create') }}",     
+                data: $('form#create_tax').serialize(),
+                 beforeSend: function(request) {
+                    return request.setRequestHeader('X-CSRF-Token', $("meta[name='csrf-token']").attr('content'));
+                },               
+                success: function(data) {
+                    $(".help-block").hide();
+                    $(".form-group").removeClass("has-error");
+                    if (data.status === "success") {
+                        console.log(data);
+                    }  
+                    else {
+                        $("#name").after("<span class='help-block'>" + data.errors.name + "</span>").parent().addClass("has-error");
+                        $("#rate").after("<span class='help-block'>" + data.errors.rate + "</span>").parent().addClass("has-error");
+                    }
+                },
+                error: function(xhr, textStatus, thrownError) {
+                    alert("Something went wrong. Please Try again later...");
+                }
+            });
+              return false;
+        });       
+        
+        
+        
     });
 </script>
 @stop

@@ -173,10 +173,11 @@ class InvoicesController extends \BaseController {
 
         $client = $invoice->address($invoice->client);
         $biller = $invoice->address($invoice->biller);
+        $logo = $invoice->logo($invoice->biller);
         $tax_rate = $this->tax_rate->pluck('name');
         $items = $invoice->item;
 
-        return View::make('invoices.show', compact('invoice', 'client', 'biller', 'items', 'tax_rate'));
+        return View::make('invoices.show', compact('invoice', 'client', 'biller', 'items', 'tax_rate', 'logo'));
     }
 
     /**
@@ -193,7 +194,7 @@ class InvoicesController extends \BaseController {
         $tax_rate = $this->tax_rate->pluck('name');
         $items = $invoice->item;
 
-        $pdf = PDF::loadView('invoices.show', compact('invoice', 'client', 'biller', 'items', 'tax_rate'));
+        $pdf = PDF::loadView('invoices.pdf', compact('invoice', 'client', 'biller', 'items', 'tax_rate'));
         return $pdf->download('invoice.pdf');        
         
     }

@@ -87,8 +87,9 @@
                         </select>
                         @endif      
                         {{ $errors->first('tax_rate', '<span class="help-block">:message</span>') }}
-                        @else
-                        <a href="#" class="btn btn-link">Manage Taxes</a>
+                         @else
+                            <a data-html="false" class="btn btn-primary new-tax" data-toggle="modal" href="#" data-title="{{ Lang::get('tax_rates.general.new') }}" onClick="return false;">{{ Lang::get('tax_rates.general.new') }}</a>
+
                         @endif
                     </td> 
                     <td class="total-value" align="right">
