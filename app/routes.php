@@ -11,7 +11,11 @@
   |
  */
 
-Route::get('/', 'HomeController@showIndex');
+Route::get('/', 'PublicController@showIndex');
+Route::get('about', 'PublicController@about');
+Route::get('plans', 'PublicController@plans');
+Route::get('features', 'PublicController@features');
+
 
 // Confide routes
 Route::get('users/create', 'UsersController@create');
@@ -27,16 +31,23 @@ Route::get('users/logout', 'UsersController@logout');
 
 Route::group(array('before' => 'auth'), function() {
 
+    Route::get('account', 'UsersController@edit');
+    Route::post('account', 'UsersController@update');
+
+
+
+    Route::controller('settings', 'SettingsController');
+
     Route::get('dashboard', 'DashboardController@index');
 
     Route::get('billers/{id}/restore', 'BillersController@restore');
     Route::get('billers/{id}/delete', 'BillersController@delete');
     Route::resource('billers', 'BillersController');
- 
+
     Route::get('clients/{id}/restore', 'ClientsController@restore');
     Route::get('clients/{id}/delete', 'ClientsController@delete');
     Route::resource('clients', 'ClientsController');
- 
+
     Route::get('invoices/{id}/download', 'InvoicesController@download');
     Route::get('invoices/{id}/restore', 'InvoicesController@restore');
     Route::get('invoices/{id}/delete', 'InvoicesController@delete');

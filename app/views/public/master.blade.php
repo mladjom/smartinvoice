@@ -14,16 +14,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="apple-touch-icon-precomposed"  href="{{{ asset('assets/ico/apple-touch-icon-precomposed.png') }}}">
         <link rel="shortcut icon" href="{{{ asset('assets/ico/favicon.png') }}}" type="image/x-icon">
-        <link href='//fonts.googleapis.com/css?family=Roboto:400,700,900,100' rel='stylesheet' type='text/css'>
         {{ HTML::style('assets/lib/font-awesome/css/font-awesome.min.css'); }}
         {{ HTML::style('assets/css/main.min.css'); }}
         @yield('styles')
     </head>
     <body>
         @include('public/nav')
-        <div class="container"> 
-            @include('notifications')
+        @include('notifications')
             @yield('content')
+        <div class="container"> 
         </div>
         @include('layouts/footer')
         {{ HTML::script('assets/lib/jquery/jquery.min.js'); }}

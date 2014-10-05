@@ -19,5 +19,4 @@
 {{ Form::open(array('url' => 'invoices', 'files' => true)) }}
     @include('invoices/form')
 {{ Form::close() }}
-@include('tax_rates/modal')
 @stop

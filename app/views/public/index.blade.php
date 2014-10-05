@@ -1,6 +1,5 @@
 @extends('public.master')
 
-@section('content') 
-
-
+@section('content')
+home
 @stop

@@ -53,8 +53,7 @@ class ClientsController extends \BaseController {
      * @return Response
      */
     public function create() {
-        $countries = Country::all();
-        return View::make('clients.create', compact('countries'));
+        return View::make('clients.create');
     }
 
     /**
@@ -66,51 +65,62 @@ class ClientsController extends \BaseController {
 
         $validator = Validator::make($data = Input::all(), Client::$rules);
 
-        if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator)->withInput();
-        }
+
         $user = Auth::user();
-        // store the client data
-        $this->client->name = Input::get('name');
-        $this->client->address_1 = Input::get('address_1');
-        $this->client->address_2 = Input::get('address_2');
-        $this->client->city = Input::get('city');
-        $this->client->zip = Input::get('zip');
-        $this->client->state = Input::get('state');
-        $this->client->country_id = Input::get('country_id');
-        $this->client->phone = Input::get('phone');
-        $this->client->mobile = Input::get('mobile');
-        $this->client->fax = Input::get('fax');
-        $this->client->email = Input::get('email');
-        $this->client->web = Input::get('web');
-        $this->client->user_id = $user->id;
+        if ($validator->passes()) {
 
-        if (Input::hasFile('logo')) {
+            // store the client data
+            $this->client->name = Input::get('name');
+            $this->client->address_1 = Input::get('address_1');
+            $this->client->address_2 = Input::get('address_2');
+            $this->client->city = Input::get('city');
+            $this->client->zip = Input::get('zip');
+            $this->client->state = Input::get('state');
+            $this->client->country_id = Input::get('country_id');
+            $this->client->phone = Input::get('phone');
+            $this->client->mobile = Input::get('mobile');
+            $this->client->fax = Input::get('fax');
+            $this->client->email = Input::get('email');
+            $this->client->web = Input::get('web');
+            $this->client->user_id = $user->id;
 
-            $file = Input::file('logo');
-            $thumbnail = Image::make($file->getRealPath())->crop(240, 80);
+            if (Input::hasFile('logo')) {
 
-            $destinationPath = 'uploads/' . $user->username . "/clients/";
-            $filename_string = sha1(time() . time() . $file->getClientOriginalName());
-            $filename = $filename_string . "." . $file->getClientOriginalExtension();
-            $filename_thumb = $filename_string . "_thumb" . "." . $file->getClientOriginalExtension();
+                $file = Input::file('logo');
+                $thumbnail = Image::make($file->getRealPath())->crop(200, 80);
 
-            if (!File::exists($destinationPath)) {
-                mkdir($destinationPath, 0777, true);
+                $destinationPath = 'uploads/' . $user->username . "/clients/";
+                $filename_string = sha1(time() . time() . $file->getClientOriginalName());
+                $filename = $filename_string . "." . $file->getClientOriginalExtension();
+                $filename_thumb = $filename_string . "_thumb" . "." . $file->getClientOriginalExtension();
+
+                if (!File::exists($destinationPath)) {
+                    mkdir($destinationPath, 0777, true);
+                }
+                $upload_success = Input::file('logo')->move($destinationPath, $filename) && $thumbnail->save($destinationPath . "/" . $filename_thumb);
+
+                if ($upload_success) {
+                    $this->client->image_name = $file->getClientOriginalName();
+                    $this->client->image_path = $destinationPath . $filename;
+                    $this->client->image_path_thumbnail = $destinationPath . $filename_thumb;
+                }
             }
-            $upload_success = Input::file('logo')->move($destinationPath, $filename) && $thumbnail->save($destinationPath . "/" . $filename_thumb);
 
-            if ($upload_success) {
-                $this->client->image_name = $file->getClientOriginalName();
-                $this->client->image_path = $destinationPath . $filename;
-                $this->client->image_path_thumbnail = $destinationPath . $filename_thumb;
+            if ($this->client->save()) {
+                $this->client->user_id = $user->id;
+
+                if (Request::ajax()) {
+                    return Response::json(array(
+                                'status' => 'success',
+                    ));
+                }
+                return Redirect::to('clients/' . $this->client->id . '/edit')->with('success', Lang::get('client.message.success.create'));
             }
         }
-
-        $this->client->user_id = $user->id;
-        $this->client->save();
-
-        return Redirect::route('clients.index');
+        if (Request::ajax()) {
+            return Response::json(array('status' => 'error', 'errors' => $validator->errors()->toArray()));
+        }
+        return Redirect::back()->withErrors($validator)->withInput();
     }
 
     /**
@@ -123,10 +133,10 @@ class ClientsController extends \BaseController {
         $client = Client::findOrFail($id);
         if (Request::ajax()) {
             return Response::json(array(
-                'status' => 'success',
-                'info' => $client,
-                'country' => $client->country->name
-                )
+                        'status' => 'success',
+                        'info' => $client,
+                        'country' => $client->country->name
+                            )
             );
         }
         return View::make('clients.show', compact('client'));
@@ -139,9 +149,8 @@ class ClientsController extends \BaseController {
      * @return Response
      */
     public function edit($id) {
-        $countries = Country::all();
         $client = Client::find($id);
-        return View::make('clients.edit', compact('client', 'countries'));
+        return View::make('clients.edit', compact('client'));
     }
 
     /**
@@ -177,9 +186,9 @@ class ClientsController extends \BaseController {
         if (Input::hasFile('logo')) {
 
             File::delete($client->image_path, $client->image_path_thumbnail);
-            
+
             $file = Input::file('logo');
-            $thumbnail = Image::make($file->getRealPath())->crop(240, 80);
+            $thumbnail = Image::make($file->getRealPath())->crop(200, 80);
 
             $destinationPath = 'uploads/' . $user->username . "/clients/";
             $filename_string = sha1(time() . time() . $file->getClientOriginalName());
@@ -209,7 +218,7 @@ class ClientsController extends \BaseController {
      * @return Response
      */
     public function destroy($id) {
-        
+
         Client::destroy($id);
 
         return Redirect::route('clients.index');
@@ -222,12 +231,12 @@ class ClientsController extends \BaseController {
      * @return Response
      */
     public function restore($id) {
-  
+
         Client::withTrashed()->where('id', $id)->restore();
 
         return Redirect::route('clients.index');
-    }    
-    
+    }
+
     /**
      * Force remove the specified client from storage.
      *
@@ -235,10 +244,10 @@ class ClientsController extends \BaseController {
      * @return Response
      */
     public function delete($id) {
-        
+
         Client::withTrashed()->where('id', $id)->forceDelete();
 
         return Redirect::route('clients.index');
-    }  
-    
+    }
+
 }

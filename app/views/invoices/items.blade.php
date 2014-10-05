@@ -29,7 +29,7 @@
                         <input type="text" class="qty form-control" value="{{$item->quantity}}" placeholder="0" name="item_qty[]" id="itemQty">
                     </td>
                     <td align="right">
-                        <span class="item_total">{{$item->total}}</span>
+                        <span class="currency">{{ $currency }}</span> <span class="item_total">{{$item->total}}</span>
                     </td>
                 </tr>
                 @endforeach 
@@ -52,7 +52,7 @@
                     <input type="text" class="qty form-control" value="" placeholder="0" name="item_qty[]" id="itemQty">
                 </td>
                 <td align="right">
-                    <span class="item_total">0.00</span>
+                    <span class="currency">{{ $currency }}</span> <span class="item_total">0.00</span>
                 </td>
                 </tr>
                 @endif
@@ -64,7 +64,7 @@
                     <td colspan="2" class="total-line" align="right">{{ Lang::get('general.subtotal') }}</td>
                     <td class="total-value" align="right">
                         <input type="hidden" class="subtotal" name="subtotal" value="{{{ Input::old('subtotal', isset($invoice) ? $invoice->subtotal : '0.00') }}}">
-                        <div class="subtotal">{{{ Input::old('subtotal', isset($invoice) ? $invoice->subtotal : '0.00') }}}</div>
+                        <span class="currency">{{ $currency }}</span> <span class="subtotal">{{{ Input::old('subtotal', isset($invoice) ? $invoice->subtotal : '0.00') }}}</span>
                     </td>
                 </tr>
                 <tr>
@@ -73,28 +73,27 @@
                         @if (count($tax_rates ) > 0)
                         @if (isset($invoice))
                         <select class="form-control" name="tax_rate" id="tax_rate">
-                            <option value="0" data-rate="0.00">{{ Lang::get('general.tax') }}</option>
+                            <option value="0.00" data-rate="0.00">{{ Lang::get('general.tax') }}</option>
                             @foreach ($tax_rates as $rate)
-                            <option {{ $invoice->tax_rate_id == $rate->id ? 'selected="selected"' : null }} value="{{ $rate->id }}" data-rate="{{ $rate->tax_total }}">{{ $rate->name }}</option>
+                            <option {{ $invoice->tax_rate_id == $rate->id ? 'selected="selected"' : null }} value="{{ $rate->id }}" data-rate="{{ $rate->rate }}">{{ $rate->name }}</option>
                             @endforeach
                         </select>      
                         @else
                         <select class="form-control" name="tax_rate" id="tax_rate">
-                            <option value="0" data-rate="0.00" selected>{{ Lang::get('general.tax') }}</option>
+                            <option value="0.00" data-rate="0.00" selected>{{ Lang::get('general.tax') }}</option>
                             @foreach ($tax_rates as $rate)
-                            <option value="{{ $rate->id }}" data-rate="{{ $rate->tax_total }}">{{ $rate->name }}</option>
+                            <option value="{{ $rate->id }}" data-rate="{{ $rate->rate }}">{{ $rate->name }}</option>
                             @endforeach
                         </select>
                         @endif      
                         {{ $errors->first('tax_rate', '<span class="help-block">:message</span>') }}
                          @else
                             <a data-html="false" class="btn btn-primary new-tax" data-toggle="modal" href="#" data-title="{{ Lang::get('tax_rates.general.new') }}" onClick="return false;">{{ Lang::get('tax_rates.general.new') }}</a>
-
                         @endif
                     </td> 
                     <td class="total-value" align="right">
                         <input type="hidden" id="invoice_total_tax" name="invoice_total_tax" value="{{{ Input::old('tax_total', isset($invoice) ? $invoice->tax_total : '0.00') }}}">
-                        <div id="taxtotal">{{{ Input::old('tax_total', isset($invoice) ? $invoice->tax_total : '0.00') }}}</div>
+                        <span class="currency">{{ $currency }}</span> <span id="taxtotal">{{{ Input::old('tax_total', isset($invoice) ? $invoice->tax_total : '0.00') }}}</span>
                     </td>
                 </tr>
                 <tr>
@@ -102,7 +101,7 @@
                     <td colspan="2" class="total-line" align="right">{{ Lang::get('general.total') }}</td>
                     <td class="total-value" align="right">
                         <input type="hidden" class="total" name="total" value="{{{ Input::old('total', isset($invoice) ? $invoice->total : '0.00') }}}">
-                        <div id="total">{{{ Input::old('total', isset($invoice) ? $invoice->total : '0.00') }}}</div>
+                        <span class="currency">{{ $currency }}</span> <span id="total">{{{ Input::old('total', isset($invoice) ? $invoice->total : '0.00') }}}</span>
                     </td>
                 </tr>
 
@@ -119,19 +118,15 @@
                     <td colspan="2" class="blank"> </td>
                     <td colspan="2" class="total-line balance" align="right"><font class="invoice-total">{{ Lang::get('general.total_due') }}</font></td>
                     <td class="total-value balance" align="right">
-                        <h2><div class="due">{{{ Input::old('balance', isset($invoice) ? $invoice->balance : '0.00') }}}</div></h2>
+                        <h4><span class="currency">{{ $currency }}</span> <span class="due">{{{ Input::old('balance', isset($invoice) ? $invoice->balance : '0.00') }}}</span></h4>
                     </td>
                 </tr>
-
             </table>
         </div>
-
-        <h4>Invoice notes</h4>
         <hr>
+        <h4>Invoice notes</h4>
         <div class="form-group {{{ $errors->has('note') ? 'has-error' : '' }}}">
-            <textarea class="form-control" name="note" rows="3">Total amount should be paid within 14 working days from invoice date. </textarea>
+            <textarea class="form-control" name="note" rows="3">{{{ Input::old('note', isset($invoice) ? $invoice->note : null) }}}</textarea>
         </div>
-
     </div>
-
 </div>

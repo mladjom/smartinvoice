@@ -53,8 +53,7 @@ class BillersController extends \BaseController {
      * @return Response
      */
     public function create() {
-        $countries = Country::all();
-        return View::make('billers.create', compact('countries'));
+        return View::make('billers.create');
     }
 
     /**
@@ -66,51 +65,60 @@ class BillersController extends \BaseController {
 
         $validator = Validator::make($data = Input::all(), Biller::$rules);
 
-        if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator)->withInput();
-        }
         $user = Auth::user();
-        // store the biller data
-        $this->biller->name = Input::get('name');
-        $this->biller->address_1 = Input::get('address_1');
-        $this->biller->address_2 = Input::get('address_2');
-        $this->biller->city = Input::get('city');
-        $this->biller->zip = Input::get('zip');
-        $this->biller->state = Input::get('state');
-        $this->biller->country_id = Input::get('country_id');
-        $this->biller->phone = Input::get('phone');
-        $this->biller->mobile = Input::get('mobile');
-        $this->biller->fax = Input::get('fax');
-        $this->biller->email = Input::get('email');
-        $this->biller->web = Input::get('web');
-        $this->biller->user_id = $user->id;
 
-        if (Input::hasFile('logo')) {
+        if ($validator->passes()) {
 
-            $file = Input::file('logo');
-            $thumbnail = Image::make($file->getRealPath())->crop(240, 80);
+            // store the biller data
+            $this->biller->name = Input::get('name');
+            $this->biller->address_1 = Input::get('address_1');
+            $this->biller->address_2 = Input::get('address_2');
+            $this->biller->city = Input::get('city');
+            $this->biller->zip = Input::get('zip');
+            $this->biller->state = Input::get('state');
+            $this->biller->country_id = Input::get('country_id');
+            $this->biller->phone = Input::get('phone');
+            $this->biller->mobile = Input::get('mobile');
+            $this->biller->fax = Input::get('fax');
+            $this->biller->email = Input::get('email');
+            $this->biller->web = Input::get('web');
+            $this->biller->user_id = $user->id;
+            if (Input::hasFile('logo')) {
 
-            $destinationPath = 'uploads/' . $user->username . "/billers/";
-            $filename_string = sha1(time() . time() . $file->getClientOriginalName());
-            $filename = $filename_string . "." . $file->getClientOriginalExtension();
-            $filename_thumb = $filename_string . "_thumb" . "." . $file->getClientOriginalExtension();
+                $file = Input::file('logo');
+                $thumbnail = Image::make($file->getRealPath())->crop(200, 80);
 
-            if (!File::exists($destinationPath)) {
-                mkdir($destinationPath, 0777, true);
+                $destinationPath = 'uploads/' . $user->username . "/billers/";
+                $filename_string = sha1(time() . time() . $file->getClientOriginalName());
+                $filename = $filename_string . "." . $file->getClientOriginalExtension();
+                $filename_thumb = $filename_string . "_thumb" . "." . $file->getClientOriginalExtension();
+
+                if (!File::exists($destinationPath)) {
+                    mkdir($destinationPath, 0777, true);
+                }
+                $upload_success = Input::file('logo')->move($destinationPath, $filename) && $thumbnail->save($destinationPath . "/" . $filename_thumb);
+
+                if ($upload_success) {
+                    $this->biller->image_name = $file->getClientOriginalName();
+                    $this->biller->image_path = $destinationPath . $filename;
+                    $this->biller->image_path_thumbnail = $destinationPath . $filename_thumb;
+                }
             }
-            $upload_success = Input::file('logo')->move($destinationPath, $filename) && $thumbnail->save($destinationPath . "/" . $filename_thumb);
+            if ($this->biller->save()) {
+                $this->biller->user_id = $user->id;
 
-            if ($upload_success) {
-                $this->biller->image_name = $file->getClientOriginalName();
-                $this->biller->image_path = $destinationPath . $filename;
-                $this->biller->image_path_thumbnail = $destinationPath . $filename_thumb;
+                if (Request::ajax()) {
+                    return Response::json(array(
+                                'status' => 'success',
+                    ));
+                }
+             return Redirect::to('billers/' . $this->biller->id . '/edit')->with('success', Lang::get('billers.message.success.create'));
             }
         }
-
-        $this->biller->user_id = $user->id;
-        $this->biller->save();
-
-        return Redirect::route('billers.index');
+        if (Request::ajax()) {
+            return Response::json(array('status' => 'error', 'errors' => $validator->errors()->toArray()));
+        }
+        return Redirect::back()->withErrors($validator)->withInput();
     }
 
     /**
@@ -142,14 +150,9 @@ class BillersController extends \BaseController {
      */
     public function edit($id) {
 
-        $biller = Biller::findOrFail($id); 
+        $biller = Biller::findOrFail($id);
 
-//        if ($biller->user_id != Auth::user()->id) {
-//            return Redirect::route('billers.index')->withError('Unable to access that biller');
-//        }
-
-        $countries = Country::all();
-        return View::make('billers.edit', compact('biller', 'countries'));
+        return View::make('billers.edit', compact('biller'));
     }
 
     /**
@@ -187,7 +190,7 @@ class BillersController extends \BaseController {
             File::delete($biller->image_path, $biller->image_path_thumbnail);
 
             $file = Input::file('logo');
-            $thumbnail = Image::make($file->getRealPath())->crop(240, 80);
+            $thumbnail = Image::make($file->getRealPath())->crop(200, 80);
 
             $destinationPath = 'uploads/' . $user->username . "/billers/";
             $filename_string = sha1(time() . time() . $file->getClientOriginalName());

@@ -92,8 +92,11 @@ class InvoicesController extends \BaseController {
         $clients = $user->client;
         $billers = $user->biller;
         $tax_rates = TaxRate::where('user_id', $user->id)->get();
+        $countries = Country::all();
+        $setting = User::find($user->id)->setting;
+        $currency = Country::where('id', $setting->currency_id)->pluck('currency_code');;
 
-        return View::make('invoices.create', compact('clients', 'billers', 'tax_rates'));
+        return View::make('invoices.create', compact('clients', 'billers', 'tax_rates', 'countries', 'setting', 'currency'));
     }
 
     /**
@@ -113,6 +116,7 @@ class InvoicesController extends \BaseController {
 
         $this->invoice->biller_id = Input::get('biller_id');
         $this->invoice->client_id = Input::get('client_id');
+        $this->invoice->currency_id = Input::get('currency_id');
         $this->invoice->number = Input::get('number');
         $this->invoice->subtotal = floatval(Input::get('subtotal'));
         $this->invoice->tax_rate_id = Input::get('tax_rate');
@@ -123,6 +127,7 @@ class InvoicesController extends \BaseController {
         $paid = floatval(Input::get('invoice_total_paid'));
         $this->invoice->balance = $total - $paid;
         $this->invoice->user_id = $user->id;
+        $this->note = Input::get('note');
 
         if (Input::has('date')) {
             $this->invoice->date = Input::get('date');
@@ -169,8 +174,8 @@ class InvoicesController extends \BaseController {
      * @return Response
      */
     public function show($id) {
+        
         $invoice = Invoice::find($id);
-
         $client = $invoice->address($invoice->client);
         $biller = $invoice->address($invoice->biller);
         $logo = $invoice->logo($invoice->biller);
@@ -214,10 +219,11 @@ class InvoicesController extends \BaseController {
         $clients = $user->client;
         $billers = $user->biller;
         $tax_rates = TaxRate::where('user_id', $user->id)->get();
-        //dd($tax_rates);
         $items = $invoice->item;
+        $countries = Country::all();
+        $currency = Country::where('id', $invoice->currency_id)->pluck('currency_code');;
 
-        return View::make('invoices.edit', compact('invoice', 'clients', 'billers', 'tax_rates', 'items'));
+        return View::make('invoices.edit', compact('invoice', 'clients', 'billers', 'tax_rates', 'items', 'countries', 'currency'));
     }
 
     /**
@@ -238,10 +244,9 @@ class InvoicesController extends \BaseController {
             return Redirect::back()->withErrors($validator)->withInput();
         }
 
-        $user = Auth::user();
-
         $invoice->biller_id = Input::get('biller_id');
         $invoice->client_id = Input::get('client_id');
+        $invoice->currency_id = Input::get('currency_id');
         $invoice->number = Input::get('number');
         $invoice->subtotal = floatval(Input::get('subtotal'));
         $invoice->tax_rate_id = Input::get('tax_rate');
@@ -256,6 +261,7 @@ class InvoicesController extends \BaseController {
         if (Input::has('due_date')) {
             $invoice->due_date = Input::get('due_date');
         }
+        $invoice->note = Input::get('note');
 
         if ($invoice->save()) {
 

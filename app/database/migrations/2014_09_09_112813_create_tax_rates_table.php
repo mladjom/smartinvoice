@@ -15,7 +15,7 @@ class CreateTaxRatesTable extends Migration {
             $table->increments('id');
             $table->integer('user_id')->index();
             $table->string('name', 255);
-            $table->decimal('tax_total', 10, 2)->default(0.00);
+            $table->decimal('rate', 10, 2)->default(0.00);
             $table->timestamps();
         });
     }

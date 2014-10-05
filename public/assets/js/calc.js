@@ -29,13 +29,13 @@ function update_total() {
     subtotal = parseFloat(total);
 
     taxtotal = parseFloat(subtotal * taxrate / 100);
- 
+
     total = roundNumber(subtotal + taxtotal, 2);
 
-    $('div.subtotal').html(roundNumber(subtotal, 2));
+    $('span.subtotal').html(roundNumber(subtotal, 2));
     $('.subtotal').val(roundNumber(subtotal, 2));
  
-    $('#taxtotal').html(taxrate);
+    $('#taxtotal').html(roundNumber(taxtotal, 2));
     
     $('#invoice_total_tax').val(taxtotal);
     

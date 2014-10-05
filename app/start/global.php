@@ -79,6 +79,7 @@ App::down(function()
 */
 
 require app_path().'/filters.php';
+require app_path() . '/composers.php';
 
 //App::error(function($exception, $code)
 //{

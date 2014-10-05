@@ -1,5 +1,5 @@
 <?php
-
+use Zizaco\Confide\ConfideValidator;
 use Zizaco\Confide\ConfideUser;
 use Zizaco\Confide\ConfideUserInterface;
 use Zizaco\Entrust\HasRole;
@@ -8,7 +8,11 @@ class User extends Eloquent implements ConfideUserInterface {
 
     use ConfideUser;
 
-    use HasRole;
+use HasRole;
+
+    public function setting() {
+        return $this->hasOne('Setting');
+    }
 
     public function biller() {
         return $this->hasMany('Biller');

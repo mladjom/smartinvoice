@@ -10,15 +10,15 @@ class TaxRatesTableSeeder extends Seeder {
  
         $tax_rates = array(
             array(
-                'name' => 'VAT',
+                'name' => 'VAT 15%',
                 'user_id' => 2,
-                'tax_total' => 15,
+                'rate' => 15,
 
             ),
             array(
-                'name' => 'MOMS',
+                'name' => 'MOMS 25%',
                 'user_id' => 2,
-                'tax_total' => 25,
+                'rate' => 25,
             )
         );
 

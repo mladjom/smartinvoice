@@ -32,7 +32,13 @@ class TaxRatesController extends \BaseController {
      * @return Response
      */
     public function index() {
-        //
+        $user = Auth::user()->id;
+
+        // Grab all the user billers
+        $tax_rates = $this->tax_rate->where('user_id', $user)->get();
+
+
+        return View::make('tax_rates.index', compact('tax_rates'));
     }
 
     /**
@@ -50,20 +56,26 @@ class TaxRatesController extends \BaseController {
         if ($validator->passes()) {
 
             $this->tax_rate->name = Input::get('name');
-            $this->tax_rate->tax_total = Input::get('rate');
+            $this->tax_rate->rate = Input::get('rate');
             $this->tax_rate->user_id = Auth::user()->id;
 
             if ($this->tax_rate->save()) {
-
-                $tax_rate_id = $this->tax_rate->id;
-                return Response::json(array(
-                    'status' => 'success',
-                    'id' => $tax_rate_id,
-                ));
+                if (Request::ajax()) {
+                    return Response::json(array(
+                                'status' => 'success',
+                                'message' => trans('tax_rates.success.create'),
+                                'id' => $this->tax_rate->id,
+                                'name' => $this->tax_rate->name,
+                                'rate' => $this->tax_rate->rate,
+                    ));
+                }
+                return Redirect::route('tax_rates.index');
             }
-}
+        }
+        if (Request::ajax()) {
             return Response::json(array('status' => 'error', 'errors' => $validator->errors()->toArray()));
-        
+        }
+        return Redirect::back()->withErrors($validator)->withInput();
     }
 
     /**
@@ -117,7 +129,10 @@ class TaxRatesController extends \BaseController {
      * @return Response
      */
     public function destroy($id) {
-        //
+
+        TaxRate::destroy($id);
+
+        return Redirect::route('tax_rates.index');
     }
 
 }

@@ -16,7 +16,7 @@
         </div>
     </div>
 </div> 
-{{ Form::open(array('url' => 'billers', 'files' => true, 'class'=> 'form-horizontal')) }}
+{{ Form::open(array('url' => 'billers', 'files' => true, 'id'=> 'create_biller')) }}
     @include('billers/form')
 {{ Form::close() }}
 @stop

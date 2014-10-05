@@ -1,7 +1,11 @@
 @section('styles') 
 {{ HTML::style('assets/lib/bootstrap-datepicker/css/datepicker3.css'); }}
 @stop
-
+@section('modals') 
+@include('billers/modal')
+@include('clients/modal')
+@include('tax_rates/modal')
+@stop
 @section('scripts')
 {{ HTML::script('assets/lib/bootstrap-datepicker/js/bootstrap-datepicker.js'); }}
 {{ HTML::script('assets/js/calc.js'); }}
@@ -22,7 +26,6 @@
                      $(".logo").append(logo(data));
                 }
             });
-
         @endif 
         if ($(".delete").length > 1){
             $(".delete").show()
@@ -71,15 +74,16 @@
                 }
             });
         });
-
+        $('#currency_id').on('change', function() {
+            $(".currency").empty();
+            $(".currency").append($('option:selected', $(this)).text());
+        });
         $('input').click(function() {
             $(this).select();
         });
 
         $("#number").blur(function() {
             $(".number").replaceWith($(this).val());
-
-            console.log($(this).val());
         });
 
         $("#paid").blur(update_balance);
@@ -101,19 +105,20 @@
             if ($(".delete").length < 2)
                 $(".delete").hide();
         });       
-        $('.new-tax').click(function() {
+         // New biller
+        $('.new-biller').click(function() {
             var message = $(this).attr('data-content');
             var title = $(this).attr('data-title');
-            $('#myModalLabel').text(title);;
-            $('#dataConfirmModal').modal({show: true});
+            $('#biller_modal_label').text(title);;
+            $('#biller_modal').modal({show: true});
            return false;
         }); 
-        $("#create-tax").click(function(){
-            $.ajax({
-                type: "GET",
+        $( "#save-biller" ).click(function() {
+              $.ajax({
+                type: "POST",
                 dataType: 'json',
-                url: "{{ URL::to('tax_rates/create') }}",     
-                data: $('form#create_tax').serialize(),
+                url: "{{ URL::to('billers') }}",     
+                data: $('form#create_biller').serialize(),
                  beforeSend: function(request) {
                     return request.setRequestHeader('X-CSRF-Token', $("meta[name='csrf-token']").attr('content'));
                 },               
@@ -122,9 +127,89 @@
                     $(".form-group").removeClass("has-error");
                     if (data.status === "success") {
                         console.log(data);
+                        $('#dataConfirmModal').modal('hide');
+                        location.reload()                    
                     }  
                     else {
-                        $("#name").after("<span class='help-block'>" + data.errors.name + "</span>").parent().addClass("has-error");
+                        if (data.errors.name)
+                        $("#biller_name").after("<span class='help-block'>" + data.errors.name + "</span>").parent().addClass("has-error");
+                        if (data.errors.email)
+                        $("#biller_email").after("<span class='help-block'>" + data.errors.email + "</span>").parent().addClass("has-error");
+                    }
+                },
+                error: function(xhr, textStatus, thrownError) {
+                    alert("Something went wrong. Please Try again later...");
+                }
+            });            
+            return false;
+        }); 
+        // New client
+          $('.new-client').click(function() {
+            var message = $(this).attr('data-content');
+            var title = $(this).attr('data-title');
+            $('#client_modal_label').text(title);;
+            $('#client_modal').modal({show: true});
+           return false;
+        }); 
+        $( "#save-client" ).click(function() {
+              $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: "{{ URL::to('clients') }}",     
+                data: $('form#create_client').serialize(),
+                 beforeSend: function(request) {
+                    return request.setRequestHeader('X-CSRF-Token', $("meta[name='csrf-token']").attr('content'));
+                },               
+                success: function(data) {
+                    $(".help-block").hide();
+                    $(".form-group").removeClass("has-error");
+                    if (data.status === "success") {
+                        console.log(data);
+                        $('#dataConfirmModal').modal('hide');
+                        location.reload()                    
+                    }  
+                    else {
+                        if (data.errors.name)
+                        $("#client_name").after("<span class='help-block'>" + data.errors.name + "</span>").parent().addClass("has-error");
+                        if (data.errors.email)
+                        $("#client_email").after("<span class='help-block'>" + data.errors.email + "</span>").parent().addClass("has-error");
+                    }
+                },
+                error: function(xhr, textStatus, thrownError) {
+                    alert("Something went wrong. Please Try again later...");
+                }
+            });            
+            return false;
+        }); 
+        // New tax
+        $('.new-tax').click(function() {
+            var message = $(this).attr('data-content');
+            var title = $(this).attr('data-title');
+            $('#tax_modal_label').text(title);;
+            $('#tax_modal').modal({show: true});
+           return false;
+        }); 
+        $("#create-tax").click(function(){
+            $.ajax({
+                type: "GET",
+                dataType: 'json',
+                url: "{{ URL::to('tax_rates/create') }}",     
+                data: $('form#create_tax').serialize(),
+                beforeSend: function(request) {
+                    return request.setRequestHeader('X-CSRF-Token', $("meta[name='csrf-token']").attr('content'));
+                },               
+                success: function(data) {
+                    $(".help-block").hide();
+                    $(".form-group").removeClass("has-error");
+                    if (data.status === "success") {
+                        console.log(data);
+                        $('#dataConfirmModal').modal('hide');
+                        location.reload()                    
+                    }  
+                    else {
+                        if (data.errors.name)
+                        $("#tax_name").after("<span class='help-block'>" + data.errors.name + "</span>").parent().addClass("has-error");
+                         if (data.errors.rate)
                         $("#rate").after("<span class='help-block'>" + data.errors.rate + "</span>").parent().addClass("has-error");
                     }
                 },
@@ -134,9 +219,7 @@
             });
               return false;
         });       
-        
-        
-        
+ 
     });
 </script>
 @stop

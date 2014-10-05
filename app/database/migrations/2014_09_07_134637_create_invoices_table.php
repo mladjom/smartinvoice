@@ -13,10 +13,11 @@ class CreateInvoicesTable extends Migration {
     public function up() {
         Schema::create('invoices', function(Blueprint $table) {
             $table->increments('id');
+            $table->string('number', 255);
             $table->integer('user_id')->index();
             $table->integer('biller_id')->index();
             $table->integer('client_id')->index();
-            $table->string('number', 255);
+            $table->integer('currency_id')->index();
             $table->date('date')->nullable();
             $table->date('due_date')->nullable();
             $table->boolean('is_recurring')->default(0);
@@ -27,6 +28,7 @@ class CreateInvoicesTable extends Migration {
             $table->decimal('paid', 10, 2)->default(0.00);
             $table->decimal('balance', 10, 2)->default(0.00);
             $table->string('note')->nullable();
+            $table->string('status')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

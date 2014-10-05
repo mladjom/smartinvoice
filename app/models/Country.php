@@ -9,4 +9,7 @@ class Country extends \Eloquent {
     public function biller() {
         return $this->hasMany('Biller');
     }
+    public function client() {
+        return $this->hasMany('Client');
+    }    
 }

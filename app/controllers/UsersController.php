@@ -1,22 +1,18 @@
 <?php
 
-
-
 /**
  * UsersController Class
  *
  * Implements actions regarding user management
  */
-class UsersController extends Controller
-{
+class UsersController extends Controller {
 
     /**
      * Displays the form for account creation
      *
      * @return  Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         return View::make(Config::get('confide::signup_form'));
     }
 
@@ -25,33 +21,38 @@ class UsersController extends Controller
      *
      * @return  Illuminate\Http\Response
      */
-    public function store()
-    {
+    public function store() {
         $repo = App::make('UserRepository');
         $user = $repo->signup(Input::all());
 
         if ($user->id) {
+
+            $settings = array(
+                'user_id' => $user->id,
+                'language' => 'en',
+                'currency_id' => 840,
+            );
+
+            Setting::create($settings);
+
             if (Config::get('confide::signup_email')) {
                 Mail::queueOn(
-                    Config::get('confide::email_queue'),
-                    Config::get('confide::email_account_confirmation'),
-                    compact('user'),
-                    function ($message) use ($user) {
-                        $message
+                        Config::get('confide::email_queue'), Config::get('confide::email_account_confirmation'), compact('user'), function ($message) use ($user) {
+                    $message
                             ->to($user->email, $user->username)
                             ->subject(Lang::get('confide::confide.email.account_confirmation.subject'));
-                    }
+                }
                 );
             }
 
             return Redirect::action('UsersController@login')
-                ->with('notice', Lang::get('confide::confide.alerts.account_created'));
+                            ->with('notice', Lang::get('confide::confide.alerts.account_created'));
         } else {
             $error = $user->errors()->all(':message');
 
             return Redirect::action('UsersController@create')
-                ->withInput(Input::except('password'))
-                ->with('error', $error);
+                            ->withInput(Input::except('password'))
+                            ->with('error', $error);
         }
     }
 
@@ -60,8 +61,7 @@ class UsersController extends Controller
      *
      * @return  Illuminate\Http\Response
      */
-    public function login()
-    {
+    public function login() {
         if (Confide::user()) {
             return Redirect::to('/');
         } else {
@@ -74,8 +74,7 @@ class UsersController extends Controller
      *
      * @return  Illuminate\Http\Response
      */
-    public function doLogin()
-    {
+    public function doLogin() {
         $repo = App::make('UserRepository');
         $input = Input::all();
 
@@ -91,8 +90,8 @@ class UsersController extends Controller
             }
 
             return Redirect::action('UsersController@login')
-                ->withInput(Input::except('password'))
-                ->with('error', $err_msg);
+                            ->withInput(Input::except('password'))
+                            ->with('error', $err_msg);
         }
     }
 
@@ -103,16 +102,15 @@ class UsersController extends Controller
      *
      * @return  Illuminate\Http\Response
      */
-    public function confirm($code)
-    {
+    public function confirm($code) {
         if (Confide::confirm($code)) {
             $notice_msg = Lang::get('confide::confide.alerts.confirmation');
             return Redirect::action('UsersController@login')
-                ->with('notice', $notice_msg);
+                            ->with('notice', $notice_msg);
         } else {
             $error_msg = Lang::get('confide::confide.alerts.wrong_confirmation');
             return Redirect::action('UsersController@login')
-                ->with('error', $error_msg);
+                            ->with('error', $error_msg);
         }
     }
 
@@ -121,8 +119,7 @@ class UsersController extends Controller
      *
      * @return  Illuminate\Http\Response
      */
-    public function forgotPassword()
-    {
+    public function forgotPassword() {
         return View::make(Config::get('confide::forgot_password_form'));
     }
 
@@ -131,17 +128,16 @@ class UsersController extends Controller
      *
      * @return  Illuminate\Http\Response
      */
-    public function doForgotPassword()
-    {
+    public function doForgotPassword() {
         if (Confide::forgotPassword(Input::get('email'))) {
             $notice_msg = Lang::get('confide::confide.alerts.password_forgot');
             return Redirect::action('UsersController@login')
-                ->with('notice', $notice_msg);
+                            ->with('notice', $notice_msg);
         } else {
             $error_msg = Lang::get('confide::confide.alerts.wrong_password_forgot');
             return Redirect::action('UsersController@doForgotPassword')
-                ->withInput()
-                ->with('error', $error_msg);
+                            ->withInput()
+                            ->with('error', $error_msg);
         }
     }
 
@@ -152,10 +148,9 @@ class UsersController extends Controller
      *
      * @return  Illuminate\Http\Response
      */
-    public function resetPassword($token)
-    {
+    public function resetPassword($token) {
         return View::make(Config::get('confide::reset_password_form'))
-                ->with('token', $token);
+                        ->with('token', $token);
     }
 
     /**
@@ -163,25 +158,24 @@ class UsersController extends Controller
      *
      * @return  Illuminate\Http\Response
      */
-    public function doResetPassword()
-    {
+    public function doResetPassword() {
         $repo = App::make('UserRepository');
         $input = array(
-            'token'                 =>Input::get('token'),
-            'password'              =>Input::get('password'),
-            'password_confirmation' =>Input::get('password_confirmation'),
+            'token' => Input::get('token'),
+            'password' => Input::get('password'),
+            'password_confirmation' => Input::get('password_confirmation'),
         );
 
         // By passing an array with the token, password and confirmation
         if ($repo->resetPassword($input)) {
             $notice_msg = Lang::get('confide::confide.alerts.password_reset');
             return Redirect::action('UsersController@login')
-                ->with('notice', $notice_msg);
+                            ->with('notice', $notice_msg);
         } else {
             $error_msg = Lang::get('confide::confide.alerts.wrong_password_reset');
-            return Redirect::action('UsersController@reset_password', array('token'=>$input['token']))
-                ->withInput()
-                ->with('error', $error_msg);
+            return Redirect::action('UsersController@reset_password', array('token' => $input['token']))
+                            ->withInput()
+                            ->with('error', $error_msg);
         }
     }
 
@@ -190,10 +184,55 @@ class UsersController extends Controller
      *
      * @return  Illuminate\Http\Response
      */
-    public function logout()
-    {
+    public function logout() {
         Confide::logout();
 
         return Redirect::to('/');
     }
+
+    /**
+     * Display the specified user.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function edit() {
+
+        $user = User::find(Auth::user()->id);
+        return View::make('users.edit', compact('user'));
+    }
+
+    /**
+     * Update the specified user in storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function update() {
+        
+        $user = User::findOrFail(Auth::user()->id);
+
+        if ($user->isValid()) {
+            $user->username = Input::get('username');
+            $user->email = Input::get('email');
+            //$user->confirmed = Input::get( 'confirm' );
+
+            $user->password = Input::get('password');
+            $user->password_confirmation = Input::get('password_confirmation');
+
+            // Save if valid. Password field will be hashed before save
+            $user->save();
+        }
+
+        $error = $user->errors()->all();
+
+        if (empty($error)) {
+            // Redirect to the new user page
+            return Redirect::to('account')->with('success', Lang::get('account.message.success.update'));
+        } else {
+
+            return Redirect::back()->with('error', $error);
+        }
+    }
+
 }

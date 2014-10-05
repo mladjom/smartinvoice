@@ -90,9 +90,9 @@ module.exports = function(grunt) {
                     },
                     {
                         expand: true,
-                        cwd: 'resources/vendor/jspdf/dist',
-                        src: ['jspdf.min.js'],
-                        dest: 'public/assets/lib/jspdf'
+                        cwd: 'resources/vendor/bootstrap-tour/build',
+                        src: ['./js/bootstrap-tour.min.js', './css/bootstrap-tour.min.css'],
+                        dest: 'public/assets/lib/bootstrap-tour'
                     },                    
                     {
                         expand: true,

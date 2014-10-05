@@ -20,11 +20,14 @@
             @endif      
             {{ $errors->first('biller_id', '<span class="help-block">:message</span>') }}
         </div>
-        <!-- ./ biller --> 
+        @else
+        <a data-html="false" class="btn btn-primary new-biller" data-toggle="modal" href="#" data-title="{{ Lang::get('billers.general.new') }}" onClick="return false;">{{ Lang::get('billers.general.new') }}</a>
         @endif
+        <!-- ./ biller --> 
     </div>
     <div class="col-md-4">
         <!-- client -->
+        @if (count($clients) > 0)
         <div class="form-group {{{ $errors->has('client_id') ? 'has-error' : '' }}}">
             <label class="control-label" for="client_id">{{ Lang::get('general.client') }}</label>
             @if (isset($invoice))
@@ -43,14 +46,31 @@
             @endif      
             {{ $errors->first('client_id', '<span class="help-block">:message</span>') }}
         </div>
+        @else
+        <a data-html="false" class="btn btn-primary new-client" data-toggle="modal" href="#" data-title="{{ Lang::get('clients.general.new') }}" onClick="return false;">{{ Lang::get('clients.general.new') }}</a>
+        @endif        
         <!-- ./ client --> 
     </div>
     <div class="col-md-4">
-        <!-- design -->
-        <div class="form-group {{{ $errors->has('design_id') ? 'has-error' : '' }}}">
-            <label class="control-label" for="design_id">{{ Lang::get('general.design') }}</label>
+        <!-- currency -->
+        <div class="form-group {{{ $errors->has('currency_id') ? 'has-error' : '' }}}">
+            <label class="control-label" for="currency_id">{{ Lang::get('general.currency') }}</label>
+            @if (isset($invoice))
+            <select class="form-control" name="currency_id" id="currency_id">
+                @foreach ($countries as $country)
+                <option {{ $invoice->currency_id == $country->id ? 'selected="selected"' : null }} value="{{ $country->id }}">{{ $country->currency_code }}</option>
+                @endforeach
+            </select>      
+            @else
+            <select class="form-control" name="currency_id" id="currency_id">
+                @foreach ($countries as $country)
+                <option {{ $setting->currency_id == $country->id ? 'selected="selected"' : null }} value="{{ $country->id }}">{{ $country->currency_code }}</option>
+                @endforeach
+            </select>
+            @endif      
+            {{ $errors->first('currency_id', '<span class="help-block">:message</span>') }}
         </div>
-        <!-- ./ design --> 
+        <!-- ./ currency --> 
     </div>
 </div> 
 <div id="pdf">
@@ -135,7 +155,7 @@
 <div class="form-group">
     <div class="controls pull-right">
         <a class="btn btn-link" href="{{{ URL::to('clients') }}}">{{ Lang::get('general.cancel') }}</a>
-        <button type="submit" id="save" class="btn btn-success btn-lg">{{ Lang::get('general.save') }}</button>
+        <button type="submit" id="save-invoice" class="btn btn-success btn-lg">{{ Lang::get('general.save') }}</button>
     </div>
 </div>   
 <!-- ./ form actions -->

@@ -2,18 +2,19 @@
     <div class="col-md-3">
         <div class="form-group {{{ $errors->has('logo') ? 'has-error' : '' }}}">
             <label for="logo">{{ Lang::get('billers.label.logo') }}</label>
-            <p class="help-block">{{ Lang::get('billers.help.logo') }}</p>
+            <p class="small">{{ Lang::get('billers.help.logo') }}</p>
             <div class="fileinput fileinput-new" data-provides="fileinput">
-                <div class="fileinput-new thumbnail" style="width: 240px; height: 80px;">
+                <div class="fileinput-new thumbnail img-responsive" style="width: 200px; height: 80px;">
                     @if ( isset($biller)  )
                     @if (  File::exists($biller->image_path_thumbnail) )
                     {{ HTML::image($biller->image_path_thumbnail, $biller->image_name) }}
                     @endif
                     @else                        
-                    <img class="img-responsive" src="http://placehold.it/240x80" alt="...">
+                    <img class="img-responsive" src="http://placehold.it/200x80" alt="...">
                     @endif
                 </div>
-                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 240px; max-height: 80px;">
+                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 80px;">
+                    <img class="img-responsive" src="http://placehold.it/200x80" alt="...">
                 </div>
                 <div>
                     <span class="btn btn-default btn-file"><span class="fileinput-new">{{ Lang::get('general.select_image') }}</span>
@@ -26,11 +27,10 @@
         </div>
     </div>
     <div class="col-md-9">
-
         <!-- name -->
         <div class="form-group {{{ $errors->has('name') ? 'has-error' : '' }}}">
             <label class="control-label" for="name">{{ Lang::get('billers.label.name') }}</label>
-            <input class="form-control" type="text" name="name" id="name" placeholder="{{ Lang::get('billers.placeholder.name') }}" value="{{{ Input::old('name', isset($biller) ? $biller->name : null) }}}" />
+            <input class="form-control" type="text" name="name" id="biller_name" placeholder="{{ Lang::get('billers.placeholder.name') }}" value="{{{ Input::old('name', isset($biller) ? $biller->name : null) }}}" />
             {{ $errors->first('name', '<span class="help-block">:message</span>') }}
         </div>
         <!-- ./ name -->
@@ -138,7 +138,7 @@
                 <!-- email -->
                 <div class="form-group {{{ $errors->has('email') ? 'has-error' : '' }}}">
                     <label class="control-label" for="email">{{ Lang::get('billers.label.email') }}</label>
-                    <input class="form-control" type="text" name="email" id="email" placeholder="{{ Lang::get('billers.placeholder.email') }}" value="{{{ Input::old('email', isset($biller) ? $biller->email : null) }}}" />
+                    <input class="form-control" type="text" name="email" id="biller_email" placeholder="{{ Lang::get('billers.placeholder.email') }}" value="{{{ Input::old('email', isset($biller) ? $biller->email : null) }}}" />
                     {{ $errors->first('email', '<span class="help-block">:message</span>') }}
                 </div>
                 <!-- ./ email -->
@@ -153,13 +153,11 @@
                 <!-- ./ web -->
             </div>
         </div>
-
         <!-- form actions -->
         <div class="form-group">
-            <div class="controls">
-                <button type="submit" id="save" class="btn btn-success">{{ Lang::get('general.save') }}</button>
-                <button type="reset" class="btn btn-default">{{ Lang::get('general.reset') }}</button>
-                <a class="btn btn-link" href="{{{ URL::to('billers') }}}">{{ Lang::get('general.cancel') }}</a>
+            <div class="controls pull-right">
+                <a class="btn btn-link" data-dismiss="modal" href="{{{ URL::to('billers') }}}">{{ Lang::get('general.cancel') }}</a>
+                <button type="submit" id="save-biller" class="btn btn-success btn-lg">{{ Lang::get('general.save') }}</button>
             </div>
         </div>
         <!-- ./ form actions --> 

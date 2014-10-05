@@ -1,0 +1,55 @@
+<?php
+
+return array(
+    /*
+      |--------------------------------------------------------------------------
+      | general Language Lines
+      |--------------------------------------------------------------------------
+     */
+    'language' => 'Språk',
+    'yes' => 'Ja',
+    'no' => 'Nej',
+    'save' => 'Spara',
+    'add' => 'Lägg till',
+    'update' => 'Updatera',
+    'edit' => 'Redigera',
+    'reset' => 'Reset',
+    'cancel' => 'Avbrubt',
+    'delete' => 'Radera',
+    'back' => 'Back',
+    'select_image' => 'Select Image',
+    'remove' => 'Remove',
+    'change' => 'Change',
+    'actions' => 'Actions',
+    'about' => 'About',
+    'features' => 'Features',
+    'plans' => 'Plans',
+    'contact' => 'Kontakt',
+    'login' => 'Logga in',
+    'logout' => 'Logga ut',
+    'biller' => 'Fordringsägare',
+    'billers' => 'Fordringsägare',
+    'settings' => 'Inställningar',
+    'dashboard' => 'Panel',
+    'clients' => 'Kunder',
+    'client' => 'Kund',
+    'quotes' => 'Offerter',
+    'invoices' => 'Fakturor',
+    'invoice' => 'Faktura',
+    'country' => 'Countries',
+    'design' => 'Design',
+    // Invoice
+    'from' => 'Från',
+    'to' => 'Till',
+    'details' => 'Details',
+    'item' => 'Service/Item',
+    'description' => 'Description',
+    'price' => 'Rate/Price',
+    'qty' => 'Hrs/Qty',
+    'subtotal' => 'Subtotal',
+    'total' => 'Total',
+    'tax' => 'Tax',
+    'total_paid' => 'Total Paid',
+    'total_due' => 'Total Due',
+    'pdf' => 'PDF',
+);

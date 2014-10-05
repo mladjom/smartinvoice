@@ -12,7 +12,14 @@
  */
 
 App::before(function($request) {
-    //
+    
+    
+    
+    if (Auth::check()) {
+        $user = Auth::user()->id;
+        $setting = User::find($user)->setting;
+        App::setLocale($setting->language);
+    }
 });
 
 
@@ -36,8 +43,8 @@ Route::filter('auth', function() {
         if (Request::ajax()) {
             return Response::make('Unauthorized', 401);
         } else {
-          Session::put('loginRedirect', Request::url());
-          return Redirect::guest('users/login/');
+            Session::put('loginRedirect', Request::url());
+            return Redirect::guest('users/login/');
         }
     }
 });
@@ -90,5 +97,4 @@ Route::filter('csrf', function($route, $request) {
     if (Session::token() != $token) {
         throw new Illuminate\Session\TokenMismatchException;
     }
-    
 });

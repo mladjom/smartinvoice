@@ -11,7 +11,7 @@ class ClientsTableSeeder extends Seeder {
 
         foreach (range(1, 10) as $index) {
             Client::create([
-                'user_id' => rand(2, 3),
+                'user_id' => 2,
                 'name' => $faker->name,
                 'email' => $faker->email,
                 'address_1' => $faker->streetAddress,

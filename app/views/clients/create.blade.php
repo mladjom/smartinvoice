@@ -16,7 +16,7 @@
         </div>
     </div>
 </div> 
-{{ Form::open(array('url' => 'clients', 'files' => true)) }}
+{{ Form::open(array('url' => 'clients', 'files' => true, 'id'=> 'create_client')) }}
     @include('clients/form')
 {{ Form::close() }}
 @stop

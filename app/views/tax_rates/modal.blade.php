@@ -1,16 +1,16 @@
-<div class="modal fade" id="dataConfirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="tax_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel"></h4>
+                <h4 class="modal-title" id="tax_modal_label"></h4>
             </div>
             {{ Form::open(array('url' => 'tax_rates', 'id'=>'create_tax')) }}
             <div class="modal-body">
                 <div class="row">
                     <div class="form-group col-sm-6 {{{ $errors->has('name') ? 'has-error' : '' }}}">
                         <label class="control-label" for="name">{{ Lang::get('tax_rates.label.name') }}</label>
-                        <input class="form-control" type="text" name="name" id="name" placeholder="{{ Lang::get('tax_rates.placeholder.name') }}" value="" />
+                        <input class="form-control" type="text" name="name" id="tax_name" placeholder="{{ Lang::get('tax_rates.placeholder.name') }}" value="" />
                         {{ $errors->first('name', '<span class="help-block">:message</span>') }}
                     </div>
                     <div class="form-group col-sm-6 {{{ $errors->has('rate') ? 'has-error' : '' }}}">

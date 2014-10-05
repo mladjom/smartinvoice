@@ -33,7 +33,7 @@
                         </label>
                     </div>
                     <div class="form-group">
-                        <button tabindex="3" type="submit" class="btn btn-warning">{{{ Lang::get('confide::confide.login.submit') }}}</button>
+                        <button tabindex="3" type="submit" class="btn btn-secondary">{{{ Lang::get('confide::confide.login.submit') }}}</button>
                     </div>
                 </fieldset>
             </form>

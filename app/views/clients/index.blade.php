@@ -7,26 +7,22 @@
 @stop
 
 @section('content') 
-<div class="row">
-    <div class="col-md-12">
-        <div class="page-header">
-            <div class="pull-right">
-                <a href="{{{ URL::to('clients/create') }}}" class="btn btn-success"><i class="fa fa-plus"></i> {{ Lang::get('clients.general.new') }}</a>
-                @if (Input::get('onlyTrashed'))
-                <a class="btn btn-default" href="{{ URL::to('clients') }}">{{ Lang::get('clients.general.show_curent') }}</a>
-                @else
-                <a class="btn btn-default" href="{{ URL::to('clients?onlyTrashed=true') }}">{{ Lang::get('clients.general.show_deleted') }}</a>
-                @endif            
-            </div>
-            <h2>
-                @if (Input::get('onlyTrashed'))
-                {{ Lang::get('clients.general.deleted') }}
-                @else
-                {{ Lang::get('clients.general.current') }}
-                @endif
-            </h2>        
-        </div>
+<div class="page-header">
+    <div class="pull-right">
+        <a href="{{{ URL::to('clients/create') }}}" class="btn btn-success"><i class="fa fa-plus"></i> {{ Lang::get('clients.general.new') }}</a>
+        @if (Input::get('onlyTrashed'))
+        <a class="btn btn-default" href="{{ URL::to('clients') }}">{{ Lang::get('clients.general.show_curent') }}</a>
+        @else
+        <a class="btn btn-default" href="{{ URL::to('clients?onlyTrashed=true') }}">{{ Lang::get('clients.general.show_deleted') }}</a>
+        @endif            
     </div>
+    <h2>
+        @if (Input::get('onlyTrashed'))
+        {{ Lang::get('clients.general.deleted') }}
+        @else
+        {{ Lang::get('clients.general.current') }}
+        @endif
+    </h2>        
 </div>
 @if ($clients->count())
 <table id="clients" class="table table-bordered">
@@ -49,8 +45,8 @@
                 <a data-html="false" class="btn btn-danger delete-client" data-toggle="modal" href="{{ URL::to('clients/' . $client->id ) }}" data-content="{{ Lang::get('clients.message.warning.delete') }}" data-title="{{ Lang::get('general.delete') }} {{ htmlspecialchars($client->name) }}?" onClick="return false;"><i class="fa fa-trash-o"></i></a>
                 @else
                 <a href="{{ URL::to('clients/' . $client->id. '/restore' ) }}" class="btn btn-warning"><i class="fa fa-reply"></i></a>
-                 <a href="{{ URL::to('clients/' . $client->id. '/delete' ) }}" class="btn btn-danger"><i class="fa fa-trash-o"></i></a>
-               @endif
+                <a href="{{ URL::to('clients/' . $client->id. '/delete' ) }}" class="btn btn-danger"><i class="fa fa-trash-o"></i></a>
+                @endif
             </td>
         </tr>
         @endforeach
@@ -62,13 +58,13 @@
     {{ Lang::get('clients.table.noresults') }}
 </div>
 @endif
-    @include('layouts/modal')
+@include('layouts/modal')
 @stop
 @section('scripts')
 {{ HTML::script('assets/lib/datatables/js/jquery.dataTables.js'); }}
 {{ HTML::script('assets/lib/datatables-bootstrap3/js/datatables.js'); }}
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('#clients').dataTable({
             /* Set the defaults for DataTables initialisation */
             "bAutoWidth": false,
@@ -79,7 +75,7 @@
                 }],
             "sPaginationType": "bs_normal",
         });
-        $('.delete-client').click(function(evnt) {
+        $('.delete-client').click(function (evnt) {
             var href = $(this).attr('href');
             var message = $(this).attr('data-content');
             var title = $(this).attr('data-title');
